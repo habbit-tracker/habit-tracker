@@ -39,7 +39,7 @@ app.register_blueprint(bp)
 
 @app.route('/signup')
 def signup():
-	...
+	return flask.render_template("sign-up.html")
 
 @app.route('/signup', methods=["POST"])
 def signup_post():
@@ -47,7 +47,7 @@ def signup_post():
 
 @app.route('/login')
 def login():
-    ...
+    return flask.render_template("log-in.html")
 
 @app.route('/login', methods=["POST"])
 def login_post():
@@ -60,7 +60,7 @@ def save():
 
 @app.route('/')
 def main():
-    ...
+	return flask.redirect(flask.url_for('login'))
 
 
 
@@ -68,4 +68,5 @@ def main():
 app.run(
     host=os.getenv('IP', '0.0.0.0'),
     port=int(os.getenv('PORT', 8081)),
+    debug=True,
 )
