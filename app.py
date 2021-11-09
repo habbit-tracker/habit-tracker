@@ -2,6 +2,10 @@ import flask
 from flask_login.utils import login_required
 import os
 import json
+from dotenv import load_dotenv, find_dotenv
+from flask_sqlalchemy import SQLAlchemy
+
+load_dotenv(find_dotenv())
 
 
 app = flask.Flask(__name__, static_folder='./build/static')
@@ -10,6 +14,15 @@ app = flask.Flask(__name__, static_folder='./build/static')
 # us to load React code into a webpage. Look up create-react-app for more reading on
 # why this is necessary.
 bp = flask.Blueprint("bp", __name__, template_folder="./build")
+
+db_url = os.getenv("DATABASE_URL")
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
 
 @bp.route('/index')
 @login_required
