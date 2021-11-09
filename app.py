@@ -34,7 +34,7 @@ def signup_post():
 
 @app.route('/login')
 def login():
-    ...
+    return flask.render_template("log-in.html")
 
 @app.route('/login', methods=["POST"])
 def login_post():
@@ -47,7 +47,7 @@ def save():
 
 @app.route('/')
 def main():
-    return flask.redirect(flask.url_for("signup"))
+	return flask.redirect(flask.url_for('login'))
 
 
 
