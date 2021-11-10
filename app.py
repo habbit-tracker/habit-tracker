@@ -25,7 +25,7 @@ db = SQLAlchemy(app)
 
 
 @bp.route('/index')
-@login_required
+#@login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
     DATA = {"your": "data here"}
@@ -60,7 +60,8 @@ def save():
 
 @app.route('/')
 def main():
-	return flask.redirect(flask.url_for('login'))
+	#return flask.redirect(flask.url_for('login'))
+    return flask.redirect(flask.url_for('bp.index'))
 
 
 

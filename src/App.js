@@ -1,14 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 
+function AddHabit() {
+  return (
+    <Button variant="outline-success">Add Habit</Button>
+  );
+}
 
 function App() {
-  // fetches JSON data passed in by flask.render_template and loaded
-  // in public/index.html in the script with id "data"
+
   const args = JSON.parse(document.getElementById("data").text);
 
-  // TODO: Implement your main page as a React component.
+  return (
+    <AddHabit />
+  );
 }
 
 export default App;
