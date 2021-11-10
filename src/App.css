@@ -28,6 +28,13 @@
   color: #61dafb;
 }
 
+.form-container {
+  width: 40vw;
+  border: 1px solid rgb(133, 133, 133);
+  padding: 20px;
+  border-radius: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
