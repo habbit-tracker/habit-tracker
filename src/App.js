@@ -4,9 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 
-function AddHabit() {
+function AddHabit(props) {
   return (
-    <Button variant="outline-success">Add Habit</Button>
+    <Button variant="outline-success" onClick={() => props.onTestClick()}>Add Test Habit</Button>
   );
 }
 
@@ -88,12 +88,37 @@ function HabitForm() {
 
 }
 
+
 function App() {
+
+
+
+  function onTestCreateClick() {
+
+    console.log(JSON.stringify({
+      "title": 'Wake up by 8AM',
+      "category": 'Health',
+      "target_days": 100
+    }));
+
+    fetch('/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "title": 'Wake up by 8AM',
+        "category": 'Health',
+        "target_days": 100
+      }),
+    }).then(response => response.json());
+
+  }
 
   const args = JSON.parse(document.getElementById("data").text);
   return (
     <>
-      <HabitForm />
+      <AddHabit onTestClick={onTestCreateClick} />
     </>
   );
 }

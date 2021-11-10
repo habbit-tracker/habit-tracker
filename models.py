@@ -15,6 +15,7 @@ class Habit(db.Model):
     category = db.Column(db.String(100), nullable=True)
     date_created = db.Column(db.Date)
     active = db.Column(db.Boolean, default=True)
+    target_days = db.Column(db.Integer)
     # TODO:add frequency column
 
 db.create_all()

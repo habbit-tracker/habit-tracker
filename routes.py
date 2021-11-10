@@ -6,6 +6,8 @@ import requests
 import flask
 from flask_login import login_user, current_user, LoginManager
 from flask_login.utils import login_required
+from datetime import date
+
 
 
 @bp.route('/index')
@@ -18,6 +20,28 @@ def index():
         "index.html",
         data=data,
     )
+
+@bp.route('/save', methods=["POST"])
+def saveTestHabit():
+    response_json = flask.request.json
+    print(response_json)
+    title = response_json['title']
+    category = response_json['category']
+    date_created = date.today()
+    target_days = response_json['target_days']
+
+    habit = Habit(
+        user = 10, #hardcoded user id for test purposes
+        title = response_json['title'],
+        category = response_json['category'],
+        date_created = date.today(),
+        target_days = response_json['target_days'],
+    )
+
+    db.session.add(habit)
+    db.session.commit()
+
+    return flask.jsonify({"status":'success'}) #change this to something more meaningful
 
 app.register_blueprint(bp)
 
@@ -36,10 +60,6 @@ def login():
 @app.route('/login', methods=["POST"])
 def login_post():
 	...
-
-@app.route('/save', methods=["POST"])
-def save():
-    ...
 
 
 @app.route('/')
