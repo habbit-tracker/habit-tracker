@@ -11,6 +11,13 @@ function AddHabit(props) {
 }
 
 function HabitForm(props) {
+  const dayLabels = ['Monday', 'Tuedsay', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  let labelIdPair = [];
+  for (let i = 0; i < 7; i++) {
+    let currentGroup = [dayLabels[i], props.checkBoxIds[i]];
+    labelIdPair.push(currentGroup);
+  }
+
   return (
     <Form className="form-container">
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -23,62 +30,16 @@ function HabitForm(props) {
       </Form.Group>
       <Form.Label>Target Days</Form.Label>
       <Form.Group>
-        <Form.Check
-          inline
-          label="Monday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Tuesday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Wednesday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Thursday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Friday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Saturday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
-        <Form.Check
-          inline
-          label="Sunday"
-          name="group1"
-          type='checkbox'
-          defaultChecked='True'
-        //id=
-        />
+        {labelIdPair.map((day) => (
+          <Form.Check
+            inline
+            label={day[0]}
+            name="group1"
+            type='checkbox'
+            defaultChecked='True'
+            id={day[1]}
+          />
+        ))}
       </Form.Group>
       <Button variant="success" onClick={() => props.onTestClick()}>
         Create Habit
@@ -94,17 +55,21 @@ function App() {
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
+  let checkBoxIds = ["monCB", "tuesCB", "wedCB", "thursCB", "friCB", "satCB", "sunCB"];
 
   function onTestCreateClick() {
 
     let title = titleInput.current.value;
     let category = categoryInput.current.value;
-
-    console.log(JSON.stringify({
-      "title": title,
-      "category": category,
-      "target_days": 112 //hardcoded target_days for test purposes
-    }));
+    let target_days_str = '';
+    for (let i = 0; i < 7; i++) { //7 days in the week
+      let checkBox = document.getElementById(checkBoxIds[i]);
+      if (checkBox.checked) {
+        target_days_str = target_days_str.concat("1");
+      } else {
+        target_days_str = target_days_str.concat("0");
+      }
+    }
 
     fetch('/save', {
       method: 'POST',
@@ -114,20 +79,19 @@ function App() {
       body: JSON.stringify({
         "title": title,
         "category": category,
-        "target_days": 112
+        "target_days_str": target_days_str
       }),
     }).then(response => response.json());
 
     titleInput.current.value = "";
     categoryInput.current.value = "";
-
   }
 
   return (
     <>
-      <HabitForm onTestClick={onTestCreateClick} titleInput={titleInput} categoryInput={categoryInput} />
+      <HabitForm onTestClick={onTestCreateClick} titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
     </>
   );
-}
 
+}
 export default App;
