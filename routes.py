@@ -21,8 +21,8 @@ def index():
         data=data,
     )
 
-@bp.route('/save', methods=["POST"])
-def saveTestHabit():
+@bp.route('/create', methods=["POST"])
+def createHabit():
     response_json = flask.request.json
 
     #takes binary string ie '1100100' and converts to int

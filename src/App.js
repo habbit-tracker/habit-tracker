@@ -12,10 +12,12 @@ function AddHabit(props) {
 
 function HabitForm(props) {
   const dayLabels = ['Monday', 'Tuedsay', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  let labelIdPair = [];
+  let labelIdPairs = [];
+
+  //Places daylabels and checkBoxIds into tuple like structure >> stored in labelIdPairs for mapping
   for (let i = 0; i < 7; i++) {
-    let currentGroup = [dayLabels[i], props.checkBoxIds[i]];
-    labelIdPair.push(currentGroup);
+    let currentPair = [dayLabels[i], props.checkBoxIds[i]];
+    labelIdPairs.push(currentPair);
   }
 
   return (
@@ -30,7 +32,7 @@ function HabitForm(props) {
       </Form.Group>
       <Form.Label>Target Days</Form.Label>
       <Form.Group>
-        {labelIdPair.map((day) => (
+        {labelIdPairs.map((day) => (
           <Form.Check
             inline
             label={day[0]}
@@ -41,7 +43,8 @@ function HabitForm(props) {
           />
         ))}
       </Form.Group>
-      <Button variant="success" onClick={() => props.onTestClick()}>
+      <br />
+      <Button variant="success" onClick={() => props.onClick()}>
         Create Habit
       </Button >
     </Form>
@@ -57,11 +60,13 @@ function App() {
   let categoryInput = useRef(null);
   let checkBoxIds = ["monCB", "tuesCB", "wedCB", "thursCB", "friCB", "satCB", "sunCB"];
 
-  function onTestCreateClick() {
+  function onCreateClick() {
 
     let title = titleInput.current.value;
     let category = categoryInput.current.value;
     let target_days_str = '';
+
+    //Builds target_days_str by checking to see if each checkbox is checked in order from Monday through Sunday.
     for (let i = 0; i < 7; i++) { //7 days in the week
       let checkBox = document.getElementById(checkBoxIds[i]);
       if (checkBox.checked) {
@@ -71,7 +76,8 @@ function App() {
       }
     }
 
-    fetch('/save', {
+    //Sends habit information to server in JSON form.
+    fetch('/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,13 +89,14 @@ function App() {
       }),
     }).then(response => response.json());
 
+    //Clears text fields
     titleInput.current.value = "";
     categoryInput.current.value = "";
   }
 
   return (
     <>
-      <HabitForm onTestClick={onTestCreateClick} titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
+      <HabitForm onClick={onCreateClick} titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
     </>
   );
 
