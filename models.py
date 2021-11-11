@@ -2,7 +2,7 @@ from app import db
 from flask_login import UserMixin
 
 
-class Usercredential(UserMixin, db.Model):
+class UserCredential(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
     email = db.Column(db.String(80), unique=True)

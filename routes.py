@@ -1,5 +1,5 @@
 from app import app, bp, db
-from models import Usercredential, Habit
+from models import UserCredential, Habit
 import os
 import json
 import requests
@@ -24,26 +24,7 @@ def index():
 
 @bp.route('/save', methods=["POST"])
 def saveTestHabit():
-    response_json = flask.request.json
-    print(response_json)
-    title = response_json['title']
-    category = response_json['category']
-    date_created = date.today()
-    target_days = response_json['target_days']
-
-    # habit = Habit(
-    #     user=10,  # hardcoded user id for test purposes
-    #     title=response_json['title'],
-    #     category=response_json['category'],
-    #     date_created=date.today(),
-    #     target_days=response_json['target_days'],
-    # )
-
-    db.session.add(habit)
-    db.session.commit()
-
-    # change this to something more meaningful
-    return flask.jsonify({"status": 'success'})
+    ...
 
 
 app.register_blueprint(bp)
@@ -66,12 +47,12 @@ def signup_post():
         flask.flash("All fields must be input!")
         return flask.redirect(flask.url_for("signup"))
 
-    input_signup_email = Usercredential.query.filter_by(
+    input_signup_email = UserCredential.query.filter_by(
         email=signup_email).first()
 
     # Check if email already in database
     if input_signup_email:
-        flask.flash("The email has been taken. Try something else!")
+        flask.flash("This email has already been used. Try something else!")
         return flask.redirect(flask.url_for("signup"))
 
     # Check if password and confirm does not matched
@@ -83,7 +64,7 @@ def signup_post():
     else:
         encrypt_signup_password = base64.b64encode(
             signup_password.encode("utf-8"))
-        signupuser = Usercredential(username=signup_username, email=signup_email,
+        signupuser = UserCredential(username=signup_username, email=signup_email,
                                     password=encrypt_signup_password)
         db.session.add(signupuser)
         db.session.commit()
