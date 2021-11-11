@@ -6,20 +6,20 @@ import { useState, useRef } from 'react';
 
 function AddHabit(props) {
   return (
-    <Button variant="outline-success" onClick={() => props.onTestClick()}>Add Test Habit</Button>
+    <Button variant="outline-success">Add Test Habit</Button>
   );
 }
 
-function HabitForm() {
+function HabitForm(props) {
   return (
     <Form className="form-container">
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Habit Name</Form.Label>
-        <Form.Control placeholder="Habit Name" />
+        <Form.Control placeholder="Habit Name" ref={props.titleInput} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Category</Form.Label>
-        <Form.Control placeholder="Category(optional)" />
+        <Form.Control placeholder="Category(optional)" ref={props.categoryInput} />
       </Form.Group>
       <Form.Label>Target Days</Form.Label>
       <Form.Group>
@@ -80,9 +80,9 @@ function HabitForm() {
         //id=
         />
       </Form.Group>
-      <Button variant="success" type="submit">
+      <Button variant="success" onClick={() => props.onTestClick()}>
         Create Habit
-      </Button>
+      </Button >
     </Form>
   );
 
@@ -90,15 +90,20 @@ function HabitForm() {
 
 
 function App() {
+  const args = JSON.parse(document.getElementById("data").text);
 
-
+  let titleInput = useRef(null);
+  let categoryInput = useRef(null);
 
   function onTestCreateClick() {
 
+    let title = titleInput.current.value;
+    let category = categoryInput.current.value;
+
     console.log(JSON.stringify({
-      "title": 'Wake up by 8AM',
-      "category": 'Health',
-      "target_days": 100
+      "title": title,
+      "category": category,
+      "target_days": 112 //hardcoded target_days for test purposes
     }));
 
     fetch('/save', {
@@ -107,18 +112,20 @@ function App() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "title": 'Wake up by 8AM',
-        "category": 'Health',
-        "target_days": 100
+        "title": title,
+        "category": category,
+        "target_days": 112
       }),
     }).then(response => response.json());
 
+    titleInput.current.value = "";
+    categoryInput.current.value = "";
+
   }
 
-  const args = JSON.parse(document.getElementById("data").text);
   return (
     <>
-      <AddHabit onTestClick={onTestCreateClick} />
+      <HabitForm onTestClick={onTestCreateClick} titleInput={titleInput} categoryInput={categoryInput} />
     </>
   );
 }
