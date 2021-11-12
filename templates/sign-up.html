@@ -11,10 +11,20 @@
 
 <body>
     <div class="signup-container">
-        <form method="POST">
-            <input type="text" placeholder="email">
-            <input type="text" placeholder="password">
-            <input type="text" placeholder="confirm password">
+        <form action="/signup" method="POST">
+            <input type="text" placeholder="Username" name="username">
+            <input type="text" placeholder="Email" name="email">
+            <input type="text" placeholder="Password" name="password">
+            <input type="text" placeholder="Confirm Password" name="confirmpassword">
+            <p>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </p>
             <input type="submit" value="Sign Up">
         </form>
         <p>Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
