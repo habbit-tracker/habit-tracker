@@ -8,7 +8,6 @@ app = flask.Flask(__name__, static_folder='./build/static')
 
 load_dotenv(find_dotenv())
 
-
 # This tells our Flask app to look at the results of `npm build` instead of the
 # actual files in /templates when we're looking for the index page file. This allows
 # us to load React code into a webpage. Look up create-react-app for more reading on

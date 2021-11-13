@@ -21,11 +21,27 @@ def index():
         data=data,
     )
 
+@bp.route('/create', methods=["POST"])
+def createHabit():
+    response_json = flask.request.json
 
-@bp.route('/save', methods=["POST"])
-def saveTestHabit():
-    ...
+    #takes binary string ie '1100100' and converts to int
+    target_days_str = response_json['target_days_str']
+    target_days_bin = bin(int(target_days_str,2))
+    target_days_int = int(target_days_bin, 2)
 
+    habit = Habit(
+        user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
+        title = response_json['title'],
+        category = response_json['category'],
+        date_created = date.today(),
+        target_days = target_days_int,
+    )
+
+    db.session.add(habit)
+    db.session.commit()
+
+    return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
 
 app.register_blueprint(bp)
 
