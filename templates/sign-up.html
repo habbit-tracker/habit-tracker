@@ -12,10 +12,10 @@
 <body>
     <div class="signup-container">
         <form action="/signup" method="POST">
-            <input type="text" placeholder="Username" name="username">
-            <input type="text" placeholder="Email" name="email">
-            <input type="text" placeholder="Password" name="password">
-            <input type="text" placeholder="Confirm Password" name="confirmpassword">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="text" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <input type="password" placeholder="Confirm Password" name="confirmpassword" required>
             <p>
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
