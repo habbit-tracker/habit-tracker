@@ -11,9 +11,18 @@
 
 <body>
     <div class="login-container">
-        <form method="POST">
-            <input type="text" placeholder="email">
-            <input type="text" placeholder="password">
+        <form action="/login" method="POST">
+            <input type="text" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <p>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </p>
             <input type="submit" value="Log In">
         </form>
         <p>New to inHABIT? <a href="{{ url_for('signup') }}">Sign Up</a></p>

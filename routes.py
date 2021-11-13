@@ -58,11 +58,6 @@ def signup_post():
     signup_password = flask.request.form.get('password')
     signup_password_confirm = flask.request.form.get('confirmpassword')
 
-    # All fields must be input
-    if not signup_username or not signup_email or not signup_password or not signup_password_confirm:
-        flask.flash("All fields must be input!")
-        return flask.redirect(flask.url_for("signup"))
-
     input_signup_email = UserCredential.query.filter_by(
         email=signup_email).first()
 
@@ -81,7 +76,7 @@ def signup_post():
         encrypt_signup_password = base64.b64encode(
             signup_password.encode("utf-8"))
         signupuser = UserCredential(username=signup_username, email=signup_email,
-                                    password=encrypt_signup_password)
+                                    password=str(encrypt_signup_password))
         db.session.add(signupuser)
         db.session.commit()
         # login_user(signupuser)
@@ -95,7 +90,23 @@ def login():
 
 @app.route('/login', methods=["POST"])
 def login_post():
-    ...
+    login_email = flask.request.form.get('email')
+    login_password = flask.request.form.get('password')
+    encrypt_login_password = base64.b64encode(
+        login_password.encode("utf-8"))
+
+    login_user = UserCredential.query.filter_by(
+        email=login_email, password=str(encrypt_login_password)).first()
+
+    # Check if email and password match with database
+    if not login_user:
+        flask.flash("Invalid email or password. Try again!")
+        return flask.redirect(flask.url_for("login"))
+
+    # Redirect user into main page if email and password matched
+    else:
+        # login_user(login_user)
+        return flask.redirect(flask.url_for("bp.index"))
 
 
 @app.route('/')
