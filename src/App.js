@@ -78,6 +78,7 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
+  console.log(args.habits);
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);

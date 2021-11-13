@@ -1,5 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
+from database import getUserHabits
 import os
 import json
 import requests
@@ -14,7 +15,7 @@ import base64
 # @login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"your": "data here"}
+    DATA = {"habits": getUserHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -111,7 +112,9 @@ def login_post():
 
 @app.route('/')
 def main():
-    return flask.redirect(flask.url_for('login'))
+    #return flask.redirect(flask.url_for('login'))
+    return flask.redirect(flask.url_for("bp.index"))
+
 
 
 if __name__ == "__main__":
