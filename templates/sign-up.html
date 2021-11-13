@@ -1,17 +1,12 @@
-<!DOCTYPE html>
 <html>
 
 <head>
     <title>Sign Up</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap 4 CDN link -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- font-awesome 5 CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-        integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .signup-container {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,31 +15,43 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="myLeftCtn">
-                        <form action="POST" class="myForm text-center">
+                        <form action="/signup" method="POST" class="myForm text-center">
                             <header>Create New Account</header>
                             <div class="form-goup">
                                 <i class="fas fa-user"></i>
-                                <input class="myInput" type="text" placeholder="Username" id="username" required>
+                                <input class="myInput" type="text" placeholder="Username" id="username" name="username"
+                                    required>
                             </div>
                             <br>
 
                             <div class="form-group">
                                 <i class="fas fa-envelope"></i>
-                                <input class="myInput" type="text" placeholder="Email" id="email" required>
+                                <input class="myInput" type="text" placeholder="Email" id="email" name="email" required>
                             </div>
 
                             <div class="form-group">
                                 <i class="fas fa-lock"></i>
-                                <input class="myInput" type="password" placeholder="Password" id="password" required>
+                                <input class="myInput" type="password" placeholder="Password" id="password"
+                                    name="password" required>
                             </div>
 
                             <div class="form-group">
                                 <i class="fas fa-lock"></i>
-                                <input class="myInput" type="password" placeholder="Confirm Password" id="password" required>
-                            </div>    
+                                <input class="myInput" type="password" placeholder="Confirm Password" id="password"
+                                    name="confirmpassword" required>
+                            </div>
+                            <p>
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                                {% endif %}
+                                {% endwith %}
+                            </p>
                             <input type="submit" class="butt" value="CREATE ACCOUNT">
                         </form>
- 
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -72,7 +79,27 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <div class="signup-container">
+
+    <!-- >>>>>>> fdec5ccba49d98f189fb545a072114fa61d5ca84 -->
+    <!--     <div class="signup-container">
+        <form action="/signup" method="POST">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="text" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <input type="password" placeholder="Confirm Password" name="confirmpassword" required>
+            <p>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </p>
+            <input type="submit" value="Sign Up">
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+    </div> -->
 </body>
 
 </html>
