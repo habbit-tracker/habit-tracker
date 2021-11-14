@@ -1,5 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
+from test_pickle_type import PickleTest, insertTest, getPickleTest 
 from database import getUserHabits
 import os
 import json
@@ -17,6 +18,8 @@ def index():
     # TODO: insert the data fetched by your app main page here as a JSON
     DATA = {"habits": getUserHabits()}
     data = json.dumps(DATA)
+    insertTest()
+    getPickleTest()
     return flask.render_template(
         "index.html",
         data=data,
