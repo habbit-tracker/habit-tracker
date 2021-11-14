@@ -1,14 +1,20 @@
-import flask
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 import pickle
-from datetime import date
-import datetime
-import time
+from datetime import date, timedelta
 from models import UserCredential, Habit
 from flask_login import current_user
 
 def getUserHabits():
+    """
+    This function is used to send user habit data to the client.
+
+    Returns:
+        A dictionary which contains the current user's habit title and an array of dictionaries 
+        whose keys are the dates of the current week (from Mon-Friday) and values are either True
+        or False depending on if the habit was completed on that day 
+    """
+    
     #user_habits = UserCredential.query.filter_by(user=current_user.id).all()
     user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
     habits = []
@@ -61,11 +67,11 @@ def getThisWeeksDates():
     days_backward = 6 - days_forward
     week_dates = []
     for i in range(days_backward, 0,-1):
-        current_date = today - datetime.timedelta(days=i)
+        current_date = today - timedelta(days=i)
         week_dates.append(current_date)
     week_dates.append(today)
     for i in range(1,(days_forward+1)):
-        current_date = today + datetime.timedelta(days=i)
+        current_date = today + timedelta(days=i)
         week_dates.append(current_date)
 
     return week_dates
@@ -75,7 +81,7 @@ def addTestHabit():
     today = date.today()
     test_dates = []
     for i in range(1,4):
-        current_date = today - datetime.timedelta(days=i)
+        current_date = today - timedelta(days=i)
         test_dates.append(current_date)
 
     habit = Habit(

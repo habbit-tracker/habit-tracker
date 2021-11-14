@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getUserHabits, addUserHabit, addTestHabit
+from database import getUserHabits, addUserHabit
 import os
 import json
 import requests
@@ -14,7 +14,6 @@ import base64
 # @login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
-    #addTestHabit()
     DATA = {"habits": getUserHabits()}
     data = json.dumps(DATA)
     return flask.render_template(

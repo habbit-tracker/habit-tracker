@@ -36,7 +36,7 @@ export function HabitTable(props) {
     console.log(props.habits)
 
     function handleSquareClick() {
-        console.log("hi");
+        console.log("square clicked");
     }
     return (
         <Table striped bordered hover className="weekly-view">
