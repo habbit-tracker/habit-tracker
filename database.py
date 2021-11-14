@@ -14,7 +14,7 @@ def getUserHabits():
         whose keys are the dates of the current week (from Mon-Friday) and values are either True
         or False depending on if the habit was completed on that day 
     """
-    
+
     #user_habits = UserCredential.query.filter_by(user=current_user.id).all()
     user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
     habits = []
@@ -85,7 +85,7 @@ def addTestHabit():
         test_dates.append(current_date)
 
     habit = Habit(
-    user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
+    user = 10,
     title = 'test the squares',
     category = 'school',
     date_created = date.today(),
