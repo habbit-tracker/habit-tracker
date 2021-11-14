@@ -4,20 +4,25 @@ import { Table } from 'react-bootstrap';
 
 function HabitLabel(props) {
     return (
-        <td className="habit-label">{props.habitTitle}</td>
+        <td className="habit-label" >{props.habitTitle}</td>
     );
 }
 
 function HabitSquare(props) {
+    if (props.dateAndStatus['completed'] == true) {
+        return (
+            <td className="habit-square" onClick={() => props.onSquareClick()}>X</td>
+        );
+    }
     return (
-        <td className="habit-square"></td>
+        <td className="habit-square" onClick={() => props.onSquareClick()}></td>
     );
 }
 
 function HabitRow(props) {
     const squares = [];
     for (let i = 0; i < props.numOfDays; i++) {
-        squares.push(<HabitSquare />);
+        squares.push(<HabitSquare dateAndStatus={props.habit['dates_completed'][i]} onSquareClick={props.onSquareClick} />);
     }
     return (
         <tr>
@@ -28,6 +33,11 @@ function HabitRow(props) {
 }
 
 export function HabitTable(props) {
+    console.log(props.habits)
+
+    function handleSquareClick() {
+        console.log("hi");
+    }
     return (
         <Table striped bordered hover className="weekly-view">
             <thead>
@@ -44,7 +54,7 @@ export function HabitTable(props) {
             </thead>
             <tbody>
                 {props.habits.map((habit) => (
-                    <HabitRow habit={habit} numOfDays={7} />
+                    <HabitRow habit={habit} numOfDays={7} onSquareClick={handleSquareClick} />
                 ))}
             </tbody>
         </Table>

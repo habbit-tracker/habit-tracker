@@ -1,14 +1,12 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from test_pickle_type import PickleTest, insertTest, getPickleTest 
-from database import getUserHabits
+from database import getUserHabits, addUserHabit, addTestHabit
 import os
 import json
 import requests
 import flask
 from flask_login import login_user, current_user, LoginManager
 from flask_login.utils import login_required
-from datetime import date
 import base64
 
 
@@ -16,10 +14,9 @@ import base64
 # @login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
+    #addTestHabit()
     DATA = {"habits": getUserHabits()}
     data = json.dumps(DATA)
-    insertTest()
-    getPickleTest()
     return flask.render_template(
         "index.html",
         data=data,
@@ -28,22 +25,7 @@ def index():
 @bp.route('/create', methods=["POST"])
 def createHabit():
     response_json = flask.request.json
-
-    #takes binary string ie '1100100' and converts to int
-    target_days_str = response_json['target_days_str']
-    target_days_bin = bin(int(target_days_str,2))
-    target_days_int = int(target_days_bin, 2)
-
-    habit = Habit(
-        user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
-        title = response_json['title'],
-        category = response_json['category'],
-        date_created = date.today(),
-        target_days = target_days_int,
-    )
-
-    db.session.add(habit)
-    db.session.commit()
+    addUserHabit(response_json)
 
     return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
 

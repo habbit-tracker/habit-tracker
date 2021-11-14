@@ -13,10 +13,22 @@ def getUserHabits():
     user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
     habits = []
     for habit in user_habits:
-        retrieved_dates = pickle.loads(habit.dates_completed)
+        completed_dates = pickle.loads(habit.dates_completed)
+        this_weeks_dates = getThisWeeksDates()
+        current_week_completed = []
+        for week_date in this_weeks_dates:
+            if(week_date in completed_dates):
+                completed = True
+            else: 
+                completed = False
+            current_week_completed.append({
+                'date': week_date.strftime("%Y-%m-%d"),
+                'completed':completed
+            })
+
         habits.append({
             "habit_title": habit.title,
-            "dates_completed": retrieved_dates,
+            "dates_completed": current_week_completed,
         })
 
     return habits
@@ -50,7 +62,6 @@ def getThisWeeksDates():
     week_dates = []
     for i in range(days_backward, 0,-1):
         current_date = today - datetime.timedelta(days=i)
-        print(current_date)
         week_dates.append(current_date)
     week_dates.append(today)
     for i in range(1,(days_forward+1)):
@@ -60,3 +71,21 @@ def getThisWeeksDates():
     return week_dates
 
 
+def addTestHabit():
+    today = date.today()
+    test_dates = []
+    for i in range(1,4):
+        current_date = today - datetime.timedelta(days=i)
+        test_dates.append(current_date)
+
+    habit = Habit(
+    user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
+    title = 'test the squares',
+    category = 'school',
+    date_created = date.today(),
+    target_days = 32,
+    dates_completed = pickle.dumps(test_dates),
+    )
+
+    db.session.add(habit)
+    db.session.commit()
