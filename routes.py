@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getUserHabits, addUserHabit
+from database import getWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate
 import os
 import json
 import requests
@@ -14,7 +14,7 @@ import base64
 # @login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"habits": getUserHabits()}
+    DATA = {"habits": getWeekAndHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -26,6 +26,20 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
+    return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
+
+@bp.route('/update-completion', methods=["POST"])
+def updateCompletionDate():
+    response_json = flask.request.json
+    if response_json['action'] == 'adding':
+        print(response_json)
+        addCompletionDate(response_json)
+
+    elif response_json['action'] == 'removing':
+        print(response_json)
+        removeCompletionDate(response_json)
+
+    print(response_json)
     return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
 
 app.register_blueprint(bp)

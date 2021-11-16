@@ -6,6 +6,12 @@ from models import UserCredential, Habit
 from flask_login import current_user
 
 def getUserHabits():
+    #user_habits = UserCredential.query.filter_by(user=current_user.id).all()
+    user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
+    return user_habits
+
+
+def getWeekAndHabits():
     """
     This function is used to send user habit data to the client.
 
@@ -15,8 +21,7 @@ def getUserHabits():
         or False depending on if the habit was completed on that day 
     """
 
-    #user_habits = UserCredential.query.filter_by(user=current_user.id).all()
-    user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
+    user_habits = getUserHabits()
     habits = []
     for habit in user_habits:
         completed_dates = pickle.loads(habit.dates_completed)
@@ -77,6 +82,13 @@ def getThisWeeksDates():
     return week_dates
 
 
+def addCompletionDate(client_json):
+    ...
+
+
+def removeCompletionDate(client_json):
+    ...
+
 def addTestHabit():
     today = date.today()
     test_dates = []
@@ -86,12 +98,13 @@ def addTestHabit():
 
     habit = Habit(
     user = 10,
-    title = 'test the squares',
-    category = 'school',
+    title = 'drink water',
+    category = 'body',
     date_created = date.today(),
-    target_days = 32,
+    target_days = 64,
     dates_completed = pickle.dumps(test_dates),
     )
 
     db.session.add(habit)
     db.session.commit()
+
