@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getUserHabits, addUserHabit
+from database import getWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate
 import os
 import json
 import requests
@@ -25,8 +25,7 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
-    # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"habits": getUserHabits()}
+    DATA = {"habits": getWeekAndHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -39,9 +38,20 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    # TODO: update to something more meaningful
-    return flask.jsonify({"status": 'success'})
+    #TODO: update to something more meaningful
+    return flask.jsonify({"status":'success'}) 
 
+@bp.route('/update-completion', methods=["POST"])
+def updateCompletionDate():
+    response_json = flask.request.json
+    if response_json['action'] == 'adding':
+        addCompletionDate(response_json)
+
+    elif response_json['action'] == 'removing':
+        removeCompletionDate(response_json)
+        
+    #TODO: update to something more meaningful
+    return flask.jsonify({"status":'success'}) 
 
 app.register_blueprint(bp)
 
@@ -116,9 +126,7 @@ def encodepassword(password):
 
 @app.route('/')
 def main():
-    #return flask.redirect(flask.url_for('login'))
-    return flask.redirect(flask.url_for("bp.index"))
-
+    return flask.redirect(flask.url_for('login'))
 
 
 if __name__ == "__main__":

@@ -9,20 +9,22 @@ function HabitLabel(props) {
 }
 
 function HabitSquare(props) {
+    const title = props.habitTitle;
+    const date = props.dateAndStatus['date'];
     if (props.dateAndStatus['completed'] == true) {
         return (
-            <td className="habit-square" onClick={() => props.onSquareClick()}>X</td>
+            <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'removing')}>X</td>
         );
     }
     return (
-        <td className="habit-square" onClick={() => props.onSquareClick()}></td>
+        <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'adding')}></td>
     );
 }
 
 function HabitRow(props) {
     const squares = [];
     for (let i = 0; i < props.numOfDays; i++) {
-        squares.push(<HabitSquare dateAndStatus={props.habit['dates_completed'][i]} onSquareClick={props.onSquareClick} />);
+        squares.push(<HabitSquare habitTitle={props.habit['habit_title']} dateAndStatus={props.habit['dates_completed'][i]} onSquareClick={props.onSquareClick} />);
     }
     return (
         <tr>
@@ -35,11 +37,32 @@ function HabitRow(props) {
 export function HabitTable(props) {
     console.log(props.habits)
 
-    function handleSquareClick() {
+    function handleSquareClick(title, date, action) {
         console.log("square clicked");
+
+        console.log(
+            JSON.stringify({
+                "action": action,
+                "title": title,
+                "date": date,
+            }),
+        );
+
+        //Sends habit information to server in JSON form.
+        fetch('/update-completion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "action": action,
+                "title": title,
+                "date": date,
+            }),
+        }).then(response => response.json());
     }
     return (
-        <Table striped bordered hover className="weekly-view">
+        <Table striped bordered className="weekly-view">
             <thead>
                 <tr>
                     <th>Habit</th>
