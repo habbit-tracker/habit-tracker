@@ -4,14 +4,24 @@ import os
 import json
 import requests
 import flask
-from flask_login import login_user, current_user, LoginManager
-from flask_login.utils import login_required
+from flask_login import login_user, current_user, LoginManager, login_required
 from datetime import date
 import base64
 
+login_manager = LoginManager()
+login_manager.login_view = "login"
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_name):
+    """
+    Required by flask_login
+    """
+    return UserCredential.query.get(user_name)
+
 
 @bp.route('/index')
-# @login_required
+@login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
     DATA = {"your": "data here"}
@@ -31,7 +41,7 @@ def createHabit():
     target_days_int = int(target_days_bin, 2)
 
     habit = Habit(
-        user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
+        user = current_user.id,
         title = response_json['title'],
         category = response_json['category'],
         date_created = date.today(),
@@ -79,7 +89,9 @@ def signup_post():
                                     password=str(encrypt_signup_password))
         db.session.add(signupuser)
         db.session.commit()
-        # login_user(signupuser)
+
+        current_user = UserCredential.query.filter_by(email=signup_email).first()
+        login_user(current_user)
         return flask.redirect(flask.url_for("bp.index"))
 
 
@@ -95,17 +107,17 @@ def login_post():
     encrypt_login_password = base64.b64encode(
         login_password.encode("utf-8"))
 
-    login_user = UserCredential.query.filter_by(
+    existing_user = UserCredential.query.filter_by(
         email=login_email, password=str(encrypt_login_password)).first()
 
     # Check if email and password match with database
-    if not login_user:
+    if not existing_user:
         flask.flash("Invalid email or password. Try again!")
         return flask.redirect(flask.url_for("login"))
 
     # Redirect user into main page if email and password matched
     else:
-        # login_user(login_user)
+        login_user(existing_user)
         return flask.redirect(flask.url_for("bp.index"))
 
 
