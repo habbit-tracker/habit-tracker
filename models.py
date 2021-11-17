@@ -18,4 +18,5 @@ class Habit(db.Model):
     active = db.Column(db.Boolean, default=True)
     target_days = db.Column(db.Integer)
 
+
 db.create_all()
