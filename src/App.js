@@ -134,7 +134,7 @@ function App() {
 
       <br /><br />
       <HabitTable habits={habits} />
-
+      <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
     </>
   );
 

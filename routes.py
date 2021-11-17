@@ -5,7 +5,7 @@ import os
 import json
 import requests
 import flask
-from flask_login import login_user, current_user, LoginManager, login_required
+from flask_login import login_user, current_user, LoginManager, login_required, logout_user
 from datetime import date
 
 import base64
@@ -13,6 +13,7 @@ import base64
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_name):
@@ -90,7 +91,8 @@ def signup_post():
         db.session.add(signupuser)
         db.session.commit()
 
-        current_user = UserCredential.query.filter_by(email=signup_email).first()
+        current_user = UserCredential.query.filter_by(
+            email=signup_email).first()
         login_user(current_user)
         return flask.redirect(flask.url_for("bp.index"))
 
@@ -122,6 +124,14 @@ def login_post():
 
 def encodepassword(password):
     return base64.b64encode(password.encode("utf-8"))
+
+
+@app.route("/logout")
+def logout_page():
+    # variable=current_user.username
+    logout_user()
+    flask.flash("You have logged out!")
+    return flask.render_template("logout.html",)
 
 
 @app.route('/')
