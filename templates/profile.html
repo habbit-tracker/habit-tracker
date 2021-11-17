@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Profile Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap 4 CDN link -->
+  <link rel="stylesheet"
+    herf="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- font-awesome 5 CDN link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      background-color: #f9f9fa
+    }
+
+    .padding {
+      padding: 3rem !important
+    }
+
+    .user-card-full {
+      overflow: hidden
+    }
+
+    .card {
+      border-radius: 5px;
+      -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+      box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+      border: none;
+      margin-bottom: 30px
+    }
+
+    .m-r-0 {
+      margin-right: 0px
+    }
+
+    .m-l-0 {
+      margin-left: 0px
+    }
+
+    .user-card-full .user-profile {
+      border-radius: 5px 0 0 5px
+    }
+
+    .bg-c-lite-green {
+      background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+      background: linear-gradient(to right, #ee5a6f, #f29263)
+    }
+
+    .user-profile {
+      padding: 20px 0
+    }
+
+    .card-block {
+      padding: 1.25rem
+    }
+
+    .m-b-25 {
+      margin-bottom: 25px
+    }
+
+    .img-radius {
+      border-radius: 5px
+    }
+
+    h6 {
+      font-size: 14px
+    }
+
+    .card .card-block p {
+      line-height: 25px
+    }
+
+    @media only screen and (min-width: 1400px) {
+      p {
+        font-size: 14px
+      }
+    }
+
+    .card-block {
+      padding: 1.25rem
+    }
+
+    .b-b-default {
+      border-bottom: 1px solid #e0e0e0
+    }
+
+    .m-b-20 {
+      margin-bottom: 20px
+    }
+
+    .p-b-5 {
+      padding-bottom: 5px !important
+    }
+
+    .card .card-block p {
+      line-height: 25px
+    }
+
+    .m-b-10 {
+      margin-bottom: 10px
+    }
+
+    .text-muted {
+      color: #919aa3 !important
+    }
+
+    .b-b-default {
+      border-bottom: 1px solid #e0e0e0
+    }
+
+    .f-w-600 {
+      font-weight: 600
+    }
+
+    .m-b-20 {
+      margin-bottom: 20px
+    }
+
+    .m-t-40 {
+      margin-top: 20px
+    }
+
+    .p-b-5 {
+      padding-bottom: 5px !important
+    }
+
+    .m-b-10 {
+      margin-bottom: 10px
+    }
+
+    .m-t-40 {
+      margin-top: 20px
+    }
+
+    .user-card-full .social-link li {
+      display: inline-block
+    }
+
+    .user-card-full .social-link li a {
+      font-size: 20px;
+      margin: 0 10px 0 0;
+      -webkit-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="main-body">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Main Page</a></li>
+          <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+        </ol>
+      </nav>
+      <!-- /Breadcrumb -->
+
+      <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
+                  width="150">
+                <div class="mt-3">
+                  <h4>Unknown Name</h4>
+                  <p class="text-secondary mb-1">Software Engineer</p>
+                  <p class="text-muted font-size-sm">Atlanta, Georgia</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  Unknown Name
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  abc@def.com
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  (123) 456-7890
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Mobile</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  (123) 456-7890
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  Atlanta, Georgia
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <a class="btn btn-info " target="__blank"
+                    href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row gutters-sm">
+            <div class="col-sm-6 mb-3">
+              <div class="card h-10">
+                <div class="card-body">
+                  <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"></i>Habit Status
+                  </h6>
+                  <small>Habit 1</small>
+                  <div class="progress mb-3" style="height: 5px">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small>Habit 2</small>
+                  <div class="progress mb-3" style="height: 5px">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small>Habit 3</small>
+                  <div class="progress mb-3" style="height: 5px">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small>Habit 4</small>
+                  <div class="progress mb-3" style="height: 5px">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small>Habit 5</small>
+                  <div class="progress mb-3" style="height: 5px">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--JQuery CDN Link-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <div class="signup-container">
+</body>
+
+</html>
