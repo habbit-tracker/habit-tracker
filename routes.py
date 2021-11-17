@@ -21,12 +21,15 @@ def index():
         data=data,
     )
 
+
 @bp.route('/create', methods=["POST"])
 def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
+    # TODO: update to something more meaningful
+    return flask.jsonify({"status": 'success'})
+
 
 app.register_blueprint(bp)
 
@@ -77,8 +80,7 @@ def login():
 def login_post():
     login_email = flask.request.form.get('email')
     login_password = flask.request.form.get('password')
-    encrypt_login_password = base64.b64encode(
-        login_password.encode("utf-8"))
+    encrypt_login_password = encodepassword(login_password)
 
     login_user = UserCredential.query.filter_by(
         email=login_email, password=str(encrypt_login_password)).first()
@@ -92,6 +94,10 @@ def login_post():
     else:
         # login_user(login_user)
         return flask.redirect(flask.url_for("bp.index"))
+
+
+def encodepassword(password):
+    return base64.b64encode(password.encode("utf-8"))
 
 
 @app.route('/')
