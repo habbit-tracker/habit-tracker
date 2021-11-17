@@ -62,7 +62,7 @@ export function HabitTable(props) {
         }).then(response => response.json());
     }
     return (
-        <Table striped bordered hover className="weekly-view">
+        <Table striped bordered className="weekly-view">
             <thead>
                 <tr>
                     <th>Habit</th>
