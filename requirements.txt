@@ -76,4 +76,4 @@ spotipy==2.19.0
 SQLAlchemy==1.4.25
 systemd-python==234
 Werkzeug==2.0.2
-zope.interface==4.7.1
+zope.interface==5.0.0
