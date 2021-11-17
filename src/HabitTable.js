@@ -37,30 +37,6 @@ function HabitRow(props) {
 export function HabitTable(props) {
     console.log(props.habits)
 
-    function handleSquareClick(title, date, action) {
-        console.log("square clicked");
-
-        console.log(
-            JSON.stringify({
-                "action": action,
-                "title": title,
-                "date": date,
-            }),
-        );
-
-        //Sends habit information to server in JSON form.
-        fetch('/update-completion', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "action": action,
-                "title": title,
-                "date": date,
-            }),
-        }).then(response => response.json());
-    }
     return (
         <Table striped bordered className="weekly-view">
             <thead>
@@ -77,7 +53,7 @@ export function HabitTable(props) {
             </thead>
             <tbody>
                 {props.habits.map((habit) => (
-                    <HabitRow habit={habit} numOfDays={7} onSquareClick={handleSquareClick} />
+                    <HabitRow habit={habit} numOfDays={7} onSquareClick={props.onSquareClick} />
                 ))}
             </tbody>
         </Table>

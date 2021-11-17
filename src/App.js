@@ -125,6 +125,31 @@ function App() {
     handleModalClose();
   }
 
+  //moved to App.js so that it could access the habit state
+  function handleSquareClick(title, date, action) {
+    console.log("square clicked");
+
+    console.log(
+      JSON.stringify({
+        "action": action,
+        "title": title,
+        "date": date,
+      }),
+    );
+
+    //Sends habit information to server in JSON form.
+    fetch('/update-completion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "action": action,
+        "title": title,
+        "date": date,
+      }),
+    }).then(response => response.json());
+  }
 
   return (
     <>
@@ -133,7 +158,7 @@ function App() {
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
 
       <br /><br />
-      <HabitTable habits={habits} />
+      <HabitTable habits={habits} onSquareClick={handleSquareClick} />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
     </>
   );
