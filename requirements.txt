@@ -75,7 +75,6 @@ six==1.16.0
 spotipy==2.19.0
 SQLAlchemy==1.4.25
 systemd-python==234
-ufw==0.36
 unattended-upgrades==0.1
 Werkzeug==2.0.2
 zope.interface==4.7.1
