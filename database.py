@@ -103,7 +103,17 @@ def addCompletionDate(client_json):
 
 
 def removeCompletionDate(client_json):
-    ...
+    habit_title = client_json['title']
+    date_string = client_json['date']
+
+    habit = Habit.query.filter_by(title=habit_title, user=10).first() #update user id after merge
+    date_object = datetime.strptime(date_string, "%Y-%m-%d").date()
+
+    completed_dates = pickle.loads(habit.dates_completed)
+    if date_object in completed_dates:
+        completed_dates.remove(date_object)
+        habit.dates_completed = pickle.dumps(completed_dates)
+        db.session.commit()
 
 
 

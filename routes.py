@@ -13,7 +13,6 @@ import base64
 @bp.route('/index')
 # @login_required
 def index():
-    # TODO: insert the data fetched by your app main page here as a JSON
     DATA = {"habits": getWeekAndHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
@@ -33,12 +32,10 @@ def createHabit():
 def updateCompletionDate():
     response_json = flask.request.json
     if response_json['action'] == 'adding':
-        print(response_json)
         addCompletionDate(response_json)
 
     elif response_json['action'] == 'removing':
-        print(response_json)
-        #removeCompletionDate(response_json)
+        removeCompletionDate(response_json)
         
     #TODO: update to something more meaningful
     return flask.jsonify({"status":'success'}) 
