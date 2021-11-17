@@ -126,8 +126,7 @@ def logout_page():
 
 @app.route('/')
 def main():
-    # return flask.redirect(flask.url_for('login'))
-    return flask.redirect(flask.url_for("bp.index"))
+    return flask.redirect(flask.url_for('login'))
 
 
 if __name__ == "__main__":
