@@ -7,7 +7,7 @@ cachelib==0.4.1
 certifi==2019.11.28
 chardet==3.0.4
 charset-normalizer==2.0.7
-click==8.0.1
+click==7.1.2
 colorama==0.4.3
 configobj==5.0.6
 constantly==15.1.0
@@ -22,7 +22,6 @@ Flask==2.0.2
 Flask-Login==0.5.0
 Flask-Session==0.4.0
 Flask-SQLAlchemy==2.1
-gitsome==0.8.0
 greenlet==1.1.2
 gunicorn==20.1.0
 httplib2==0.14.0
