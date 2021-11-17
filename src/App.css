@@ -28,6 +28,20 @@
   color: #61dafb;
 }
 
+.habit-label {
+  max-width: 8vw;
+}
+
+.habit-square {
+  width:4vw;
+  height: 4vw;
+}
+
+.weekly-view {
+  width: 35vw;
+}
+
+
 
 @keyframes App-logo-spin {
   from {

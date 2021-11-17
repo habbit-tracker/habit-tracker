@@ -3,6 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useState, useRef } from 'react';
+import { HabitTable } from './HabitTable.js';
 
 function AddHabit(props) {
   return (
@@ -78,6 +79,8 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
+  const [habits, setHabits] = useState(args.habits);
+  console.log(habits);
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -128,6 +131,10 @@ function App() {
       <AddHabit onClick={handleModalShow} />
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
+
+      <br /><br />
+      <HabitTable habits={habits} />
+
     </>
   );
 
