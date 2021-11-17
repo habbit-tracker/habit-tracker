@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 import pickle
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from models import UserCredential, Habit
 from flask_login import current_user
 
@@ -26,6 +26,7 @@ def getWeekAndHabits():
     for habit in user_habits:
         completed_dates = pickle.loads(habit.dates_completed)
         this_weeks_dates = getThisWeeksDates()
+
         current_week_completed = []
         for week_date in this_weeks_dates:
             if(week_date in completed_dates):
@@ -83,11 +84,28 @@ def getThisWeeksDates():
 
 
 def addCompletionDate(client_json):
-    ...
+    habit_title = client_json['title']
+    date_string = client_json['date']
+
+    habit = Habit.query.filter_by(title=habit_title, user=10).first() #update user id after merge
+    date_object = datetime.strptime(date_string, "%Y-%m-%d").date()
+
+    completed_dates = pickle.loads(habit.dates_completed)
+
+    already_completed = False
+    if date_object in completed_dates:
+        already_completed = True
+
+    if already_completed == False:
+        completed_dates.append(date_object)
+        habit.dates_completed = pickle.dumps(completed_dates)
+        db.session.commit()
 
 
 def removeCompletionDate(client_json):
     ...
+
+
 
 def addTestHabit():
     today = date.today()
