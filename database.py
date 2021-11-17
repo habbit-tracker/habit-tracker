@@ -6,8 +6,7 @@ from models import UserCredential, Habit
 from flask_login import current_user
 
 def getUserHabits():
-    #user_habits = UserCredential.query.filter_by(user=current_user.id).all()
-    user_habits = Habit.query.filter_by(user=10).all() #temporarily hardcoded
+    user_habits = Habit.query.filter_by(user=current_user.id).all() #temporarily hardcoded
     return user_habits
 
 
@@ -53,7 +52,7 @@ def addUserHabit(client_json):
     target_days_int = int(target_days_bin, 2)
 
     habit = Habit(
-        user = 10, #hardcoded user id for test purposes, will update once login functionality is complete
+        user = current_user.id,
         title = client_json['title'],
         category = client_json['category'],
         date_created = date.today(),
@@ -87,7 +86,7 @@ def addCompletionDate(client_json):
     habit_title = client_json['title']
     date_string = client_json['date']
 
-    habit = Habit.query.filter_by(title=habit_title, user=10).first() #update user id after merge
+    habit = Habit.query.filter_by(title=habit_title, user=current_user.id).first() #update user id after merge
     date_object = datetime.strptime(date_string, "%Y-%m-%d").date()
 
     completed_dates = pickle.loads(habit.dates_completed)
@@ -106,7 +105,7 @@ def removeCompletionDate(client_json):
     habit_title = client_json['title']
     date_string = client_json['date']
 
-    habit = Habit.query.filter_by(title=habit_title, user=10).first() #update user id after merge
+    habit = Habit.query.filter_by(title=habit_title, user=current_user.id).first() 
     date_object = datetime.strptime(date_string, "%Y-%m-%d").date()
 
     completed_dates = pickle.loads(habit.dates_completed)
