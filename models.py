@@ -19,4 +19,5 @@ class Habit(db.Model):
     target_days = db.Column(db.Integer)
     dates_completed = db.Column(db.PickleType)
 
+
 db.create_all()
