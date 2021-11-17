@@ -28,12 +28,20 @@
   color: #61dafb;
 }
 
-.form-container {
-  width: 40vw;
-  border: 1px solid rgb(133, 133, 133);
-  padding: 20px;
-  border-radius: 20px;
+.habit-label {
+  max-width: 8vw;
 }
+
+.habit-square {
+  width:4vw;
+  height: 4vw;
+}
+
+.weekly-view {
+  width: 35vw;
+}
+
+
 
 @keyframes App-logo-spin {
   from {

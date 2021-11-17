@@ -1,13 +1,41 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useState, useRef } from 'react';
+import { HabitTable } from './HabitTable.js';
 
 function AddHabit(props) {
   return (
-    <Button variant="outline-success">Add Test Habit</Button>
+    <Button variant="outline-success" onClick={props.onClick}>Add Habit</Button>
   );
+}
+
+function FormModal(props) {
+
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton onClick={props.onClose}>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Create a New Habit
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <HabitForm titleInput={props.titleInput} categoryInput={props.categoryInput} checkBoxIds={props.checkBoxIds} />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="success" onClick={() => props.onCreate()}>
+          Create Habit
+        </Button >
+      </Modal.Footer>
+    </Modal >
+  );
+
 }
 
 function HabitForm(props) {
@@ -21,7 +49,7 @@ function HabitForm(props) {
   }
 
   return (
-    <Form className="form-container">
+    <Form >
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Habit Name</Form.Label>
         <Form.Control placeholder="Habit Name" ref={props.titleInput} />
@@ -43,10 +71,6 @@ function HabitForm(props) {
           />
         ))}
       </Form.Group>
-      <br />
-      <Button variant="success" onClick={() => props.onClick()}>
-        Create Habit
-      </Button >
     </Form>
   );
 
@@ -55,10 +79,16 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
+  const [habits, setHabits] = useState(args.habits);
+  console.log(habits);
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
   let checkBoxIds = ["monCB", "tuesCB", "wedCB", "thursCB", "friCB", "satCB", "sunCB"];
+
+  const [modalShow, setModalShow] = useState(false);
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
 
   function onCreateClick() {
 
@@ -89,14 +119,22 @@ function App() {
       }),
     }).then(response => response.json());
 
-    //Clears text fields
+    //Clears text fields and hides modal
     titleInput.current.value = "";
     categoryInput.current.value = "";
+    handleModalClose();
   }
+
 
   return (
     <>
-      <HabitForm onClick={onCreateClick} titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
+      <AddHabit onClick={handleModalShow} />
+      <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
+        titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
+
+      <br /><br />
+      <HabitTable habits={habits} />
+
     </>
   );
 

@@ -1,11 +1,13 @@
 from app import app, bp, db
 from models import UserCredential, Habit
+from database import getUserHabits, addUserHabit
 import os
 import json
 import requests
 import flask
 from flask_login import login_user, current_user, LoginManager, login_required
 from datetime import date
+
 import base64
 
 login_manager = LoginManager()
@@ -24,34 +26,22 @@ def load_user(user_name):
 @login_required
 def index():
     # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"your": "data here"}
+    DATA = {"habits": getUserHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
         data=data,
     )
 
+
 @bp.route('/create', methods=["POST"])
 def createHabit():
     response_json = flask.request.json
+    addUserHabit(response_json)
 
-    #takes binary string ie '1100100' and converts to int
-    target_days_str = response_json['target_days_str']
-    target_days_bin = bin(int(target_days_str,2))
-    target_days_int = int(target_days_bin, 2)
+    # TODO: update to something more meaningful
+    return flask.jsonify({"status": 'success'})
 
-    habit = Habit(
-        user = current_user.id,
-        title = response_json['title'],
-        category = response_json['category'],
-        date_created = date.today(),
-        target_days = target_days_int,
-    )
-
-    db.session.add(habit)
-    db.session.commit()
-
-    return flask.jsonify({"status":'success'}) #TODO: update to something more meaningful
 
 app.register_blueprint(bp)
 
@@ -104,8 +94,7 @@ def login():
 def login_post():
     login_email = flask.request.form.get('email')
     login_password = flask.request.form.get('password')
-    encrypt_login_password = base64.b64encode(
-        login_password.encode("utf-8"))
+    encrypt_login_password = encodepassword(login_password)
 
     existing_user = UserCredential.query.filter_by(
         email=login_email, password=str(encrypt_login_password)).first()
@@ -121,9 +110,15 @@ def login_post():
         return flask.redirect(flask.url_for("bp.index"))
 
 
+def encodepassword(password):
+    return base64.b64encode(password.encode("utf-8"))
+
+
 @app.route('/')
 def main():
-    return flask.redirect(flask.url_for('login'))
+    #return flask.redirect(flask.url_for('login'))
+    return flask.redirect(flask.url_for("bp.index"))
+
 
 
 if __name__ == "__main__":
