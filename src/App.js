@@ -1,10 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
 
+
+function ViewsMenuBar(props) {
+  return (<ListGroup horizontal>
+    <ListGroup.Item action>This Week</ListGroup.Item>
+    <ListGroup.Item action>Past 7 Days</ListGroup.Item>
+    <ListGroup.Item action>This Month</ListGroup.Item>
+    <ListGroup.Item action>Past Month</ListGroup.Item>
+  </ListGroup>
+  );
+}
 function AddHabit(props) {
   return (
     <Button variant="outline-success" onClick={props.onClick}>Add Habit</Button>
@@ -90,6 +100,8 @@ function App() {
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
+  const [view, setView] = useState();
+
   function onCreateClick() {
 
     let title = titleInput.current.value;
@@ -152,13 +164,17 @@ function App() {
 
   return (
     <>
-      <AddHabit onClick={handleModalShow} />
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
 
+      <ViewsMenuBar />
       <br /><br />
+
       <HabitTable habits={habits} onSquareClick={handleSquareClick} />
+      <AddHabit onClick={handleModalShow} />
+      <br /> <br /> <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
+
     </>
   );
 
