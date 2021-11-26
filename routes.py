@@ -39,8 +39,9 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    #TODO: update to something more meaningful
-    return flask.jsonify({"status":'success'}) 
+    DATA = {"habits": getWeekAndHabits()}
+    data = json.dumps(DATA)
+    return(data)
 
 @bp.route('/update-completion', methods=["POST"])
 def updateCompletionDate():
@@ -51,8 +52,9 @@ def updateCompletionDate():
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
         
-    #TODO: update to something more meaningful
-    return flask.jsonify({"status":'success'}) 
+    DATA = {"habits": getWeekAndHabits()}
+    data = json.dumps(DATA)
+    return(data)
 
 app.register_blueprint(bp)
 

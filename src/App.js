@@ -115,16 +115,40 @@ function App() {
       body: JSON.stringify({
         "title": title,
         "category": category,
-        "target_days_str": target_days_str
+        "target_days_str": target_days_str,
       }),
-    }).then(response => response.json());
+    }).then((response) => response.json())
+      .then((data) => {
+        setHabits(data.habits);
+      });
+
 
     //Clears text fields and hides modal
     titleInput.current.value = "";
     categoryInput.current.value = "";
     handleModalClose();
+
   }
 
+  //moved to App.js so that it could access the habit state
+  function handleSquareClick(title, date, action) {
+
+    //Sends habit information to server in JSON form.
+    fetch('/update-completion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "action": action,
+        "title": title,
+        "date": date,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        setHabits(data.habits);
+      });
+  }
 
   return (
     <>
@@ -133,7 +157,7 @@ function App() {
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
 
       <br /><br />
-      <HabitTable habits={habits} />
+      <HabitTable habits={habits} onSquareClick={handleSquareClick} />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
     </>
   );
