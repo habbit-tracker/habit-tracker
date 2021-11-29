@@ -1,9 +1,14 @@
 import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';/*, Navbar */
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
+import Navbar from './components/Navbar';
+/*import { Router } from 'react-router';*/
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function AddHabit(props) {
   return (
@@ -128,6 +133,12 @@ function App() {
 
   return (
     <>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/about" />
+        </Routes>
+      </Router>
       <AddHabit onClick={handleModalShow} />
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
