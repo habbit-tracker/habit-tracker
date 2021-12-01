@@ -141,13 +141,8 @@ def getThisWeeksDates():
     days_forward = 7 - day_of_week
     days_backward = 6 - days_forward
     week_dates = []
-    #could do week_dates = getPastNDates(days_backwards) and delete next 4 lines
-    #test this
+
     week_dates = getPastNDates(days_backward)
-    # for i in range(days_backward, 0,-1):
-    #     current_date = today - timedelta(days=i)
-    #     week_dates.append(current_date)
-    # week_dates.append(today)
     for i in range(1,(days_forward+1)):
         current_date = today + timedelta(days=i)
         week_dates.append(current_date)
