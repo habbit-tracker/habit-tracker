@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate
+from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits
 import os
 import json
 import requests
@@ -26,7 +26,8 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
-    DATA = {"habits": getWeekAndHabits()}
+    DATA = {"habits": getCalendarWeekAndHabits()}
+    #DATA = {"habits": getPastWeekAndHabits()}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
