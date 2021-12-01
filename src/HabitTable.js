@@ -39,9 +39,14 @@ export function HabitTable(props) {
     console.log(props.columnHeaders.length);
     let numOfDays = props.columnHeaders.length;
 
+    let monthView = false;
+    if (numOfDays == 30) {
+        monthView = true;
+    }
+
 
     return (
-        <Table striped bordered className="weekly-view">
+        <Table striped bordered className={monthView ? 'month-view' : 'week-view'}>
             <thead>
                 <tr>
                     <th>Habit</th>
