@@ -41,7 +41,8 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    DATA = {"habits": getCalendarWeekAndHabits()}
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
     data = json.dumps(DATA)
     return(data)
 
@@ -53,10 +54,9 @@ def updateCompletionDate():
 
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
-        
-    #need to update this so that it knows the view and returns correct 
-    #date_headers
-    DATA = {"habits": getCalendarWeekAndHabits()}
+    
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
     data = json.dumps(DATA)
     return(data)
 
@@ -165,6 +165,26 @@ def logout_page():
 @app.route('/')
 def main():
     return flask.redirect(flask.url_for('login'))
+
+
+def getDataFromHeaders(headers):
+    """
+    Looks at the current view's header list to determine which
+    view the user is currently seeing so that it returns the appropriate 
+    data dictionary of habits
+    - Will update this once I use view state on client side
+     """
+
+    data_dict = {}
+
+    if len(headers) == 30:
+            data_dict = {"habits": getPastMonthAndHabits(),}
+    else:
+        if "M" in headers:
+            data_dict = {"habits": getCalendarWeekAndHabits(),}
+        else:
+            data_didct = {"habits": getPastWeekAndHabits(),}
+    return data_dict
 
 
 if __name__ == "__main__":

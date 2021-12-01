@@ -92,12 +92,11 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
-  // const [habits, setHabits] = useState(args.habits);
-  // const [dayHeaders, setDayHeaders] = useState(args.day_headers)
+
+  //TODO: implement current_views state to make client server interaction smoother
   const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers])
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
-  //console.log(habits);
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -135,6 +134,7 @@ function App() {
         "title": title,
         "category": category,
         "target_days_str": target_days_str,
+        "current_view_headers": headers,
       }),
     }).then((response) => response.json())
       .then((data) => {
@@ -162,6 +162,7 @@ function App() {
         "action": action,
         "title": title,
         "date": date,
+        "current_view_headers": headers,
       }),
     }).then(response => response.json())
       .then((data) => {
