@@ -35,25 +35,29 @@ function HabitRow(props) {
 }
 
 export function HabitTable(props) {
-    console.log(props.habits)
+    console.log("headers length")
+    console.log(props.columnHeaders.length);
+    let numOfDays = props.columnHeaders.length;
+
+    let monthView = false;
+    if (numOfDays == 30) {
+        monthView = true;
+    }
+
 
     return (
-        <Table striped bordered className="weekly-view">
+        <Table striped bordered className={monthView ? 'month-view' : 'week-view'}>
             <thead>
                 <tr>
                     <th>Habit</th>
-                    <th>M</th>
-                    <th>T</th>
-                    <th>W</th>
-                    <th>Th</th>
-                    <th>F</th>
-                    <th>Sa</th>
-                    <th>Su</th>
+                    {props.columnHeaders.map((headerText) => (
+                        <th>{headerText}</th>
+                    ))}
                 </tr>
             </thead>
             <tbody>
                 {props.habits.map((habit) => (
-                    <HabitRow habit={habit} numOfDays={7} onSquareClick={props.onSquareClick} />
+                    <HabitRow habit={habit} numOfDays={numOfDays} onSquareClick={props.onSquareClick} />
                 ))}
             </tbody>
         </Table>

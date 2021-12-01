@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate
+from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers
 import os
 import json
 import requests
@@ -27,7 +27,9 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
-    DATA = {"habits": getWeekAndHabits()}
+    DATA = {"habits": getCalendarWeekAndHabits(),
+            "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+            }
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -40,7 +42,8 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    DATA = {"habits": getWeekAndHabits()}
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
     data = json.dumps(DATA)
     return(data)
 
@@ -53,12 +56,35 @@ def updateCompletionDate():
 
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
+        
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
 
-    DATA = {"habits": getWeekAndHabits()}
     data = json.dumps(DATA)
     return(data)
 
 
+@bp.route('/update-view', methods=["POST"])
+def getUserHabitView():
+    response_json = flask.request.json
+    #Briana: this can be done better, but I'm not sure of how rn
+    view = response_json['view_string']
+    if view == 'past_seven_days':
+        DATA = {"habits": getPastWeekAndHabits(),
+                "day_headers": getPastNDayNumbers(6),
+                }
+    elif view == 'past_month':
+        DATA = {"habits": getPastMonthAndHabits(),
+                "day_headers": getPastNDayNumbers(29),
+                }
+    else:
+        DATA = {"habits": getCalendarWeekAndHabits(),
+                "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+                }
+
+    data = json.dumps(DATA)
+    return(data)
+    
 app.register_blueprint(bp)
 
 
@@ -184,6 +210,26 @@ def changepassword_post():
 @app.route('/')
 def main():
     return flask.redirect(flask.url_for('login'))
+
+
+def getDataFromHeaders(headers):
+    """
+    Looks at the current view's header list to determine which
+    view the user is currently seeing so that it returns the appropriate 
+    data dictionary of habits
+    - Will update this once I use view state on client side
+     """
+
+    data_dict = {}
+
+    if len(headers) == 30:
+            data_dict = {"habits": getPastMonthAndHabits(),}
+    else:
+        if "M" in headers:
+            data_dict = {"habits": getCalendarWeekAndHabits(),}
+        else:
+            data_didct = {"habits": getPastWeekAndHabits(),}
+    return data_dict
 
 
 if __name__ == "__main__":

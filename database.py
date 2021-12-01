@@ -10,12 +10,12 @@ def getUserHabits():
     return user_habits
 
 
-def getWeekAndHabits():
+def getCalendarWeekAndHabits():
     """
     This function is used to send user habit data to the client.
 
     Returns:
-        A dictionary which contains the current user's habit title and an array of dictionaries 
+        A list of dictionaries which contain the current user's habit title and an array of dictionaries 
         whose keys are the dates of the current week (from Mon-Friday) and values are either True
         or False depending on if the habit was completed on that day 
     """
@@ -36,14 +36,84 @@ def getWeekAndHabits():
                 'date': week_date.strftime("%Y-%m-%d"),
                 'completed':completed
             })
-
+        #future improvement: just have habit title as key and dates completed as value
         habits.append({
             "habit_title": habit.title,
             "dates_completed": current_week_completed,
         })
 
-    return habits
+    ordered_habits = orderHabitList(habits)
+    return ordered_habits
 
+def getPastWeekAndHabits():
+    """
+    This function is used to send user habit data to the client.
+
+    Returns:
+        A list of dictionaries which contains the current user's habit title and an array of dictionaries 
+        whose keys are the dates of the past week (last 6 days and current date) and values are either True
+        or False depending on if the habit was completed on that day 
+    """
+
+    user_habits = getUserHabits()
+    habits = []
+    for habit in user_habits:
+        completed_dates = pickle.loads(habit.dates_completed)
+        past_weeks_dates = getPastNDates(6) #previous 6 days and today
+
+        past_week_completed = []
+        for week_date in past_weeks_dates:
+            if(week_date in completed_dates):
+                completed = True
+            else: 
+                completed = False
+            past_week_completed.append({
+                'date': week_date.strftime("%Y-%m-%d"),
+                'completed':completed
+            })
+
+        habits.append({
+            "habit_title": habit.title,
+            "dates_completed": past_week_completed,
+        })
+
+    ordered_habits = orderHabitList(habits)
+    return ordered_habits
+
+def getPastMonthAndHabits():
+    """
+    This function is used to send user habit data to the client.
+
+    Returns:
+        A list of dictionaries which contains the current user's habit title and an array of dictionaries 
+        whose keys are the dates of the past month (last 29 days and current date) and values are either True
+        or False depending on if the habit was completed on that day 
+    """
+
+    user_habits = getUserHabits()
+    habits = []
+    for habit in user_habits:
+        completed_dates = pickle.loads(habit.dates_completed)
+        past_months_dates = getPastNDates(29) #previous 29 days and today
+
+        current_month_completed = []
+        for month_date in past_months_dates:
+            if(month_date in completed_dates):
+                completed = True
+            else: 
+                completed = False
+            current_month_completed.append({
+                'date': month_date.strftime("%Y-%m-%d"),
+                'completed':completed
+            })
+
+        habits.append({
+            "habit_title": habit.title,
+            "dates_completed": current_month_completed,
+        })
+
+    ordered_habits = orderHabitList(habits)
+    return ordered_habits
 
 def addUserHabit(client_json):
     #takes binary string ie '1100100' and converts to int
@@ -71,15 +141,65 @@ def getThisWeeksDates():
     days_forward = 7 - day_of_week
     days_backward = 6 - days_forward
     week_dates = []
-    for i in range(days_backward, 0,-1):
-        current_date = today - timedelta(days=i)
-        week_dates.append(current_date)
-    week_dates.append(today)
+    #could do week_dates = getPastNDates(days_backwards) and delete next 4 lines
+    #test this
+    week_dates = getPastNDates(days_backward)
+    # for i in range(days_backward, 0,-1):
+    #     current_date = today - timedelta(days=i)
+    #     week_dates.append(current_date)
+    # week_dates.append(today)
     for i in range(1,(days_forward+1)):
         current_date = today + timedelta(days=i)
         week_dates.append(current_date)
 
     return week_dates
+
+
+
+def getPastNDates(num_days):
+    """
+    This function is used to get the dates of some N number of days backwards from today.
+
+    Input:
+        num_days: number of days from today to get the dates for (if num_days = 1, only yesterday's and
+        today's dates will be returned. if num_days = 6, dates for the past week and today will be returned)
+            pass in 6 for past week
+            pass in 29 for past month
+    Returns:
+        A list which contains num_days + 1 dates, including today's.
+    """
+    today = date.today()
+    dates = []
+    for i in range(num_days, 0, -1):
+        current_date = today - timedelta(days = i)
+        dates.append(current_date)
+    
+    dates.append(today)
+    return(dates)
+
+
+def getPastNDayNumbers(num_days):
+    """
+    This function is used to get the day numbers of some N number of days backwards from today.
+
+    Input:
+        num_days: number of days from today to get the dates for (if num_days = 1, only yesterday's and
+        today's dates will be returned. if num_days = 6, dates for the past week and today will be returned)
+            pass in 6 for past week
+            pass in 29 for past month
+    Returns:
+        A list which contains num_days + 1 days, including today's.
+    """
+
+    today = date.today()
+    day_numbers = []
+    for i in range(num_days, 0, -1):
+        current_date = today - timedelta(days = i)
+        day_numbers.append(current_date.day)
+    
+    day_numbers.append(today.day)
+    print(day_numbers)
+    return(day_numbers)
 
 
 def addCompletionDate(client_json):
@@ -115,6 +235,10 @@ def removeCompletionDate(client_json):
         db.session.commit()
 
 
+def orderHabitList(unorderd_dict_list):
+    ordered_list = sorted(unorderd_dict_list, key = lambda i: i['habit_title'])
+    return ordered_list
+        
 
 def addTestHabit():
     today = date.today()

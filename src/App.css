@@ -37,8 +37,12 @@
   height: 4vw;
 }
 
-.weekly-view {
+.week-view {
   width: 35vw;
+}
+
+.month-view {
+  width: 90vw;
 }
 
 
