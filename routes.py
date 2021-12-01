@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits
+from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers
 import os
 import json
 import requests
@@ -26,8 +26,9 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
-    DATA = {"habits": getCalendarWeekAndHabits()}
-    #DATA = {"habits": getPastWeekAndHabits()}
+    DATA = {"habits": getCalendarWeekAndHabits(),
+            "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+            }
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -40,7 +41,7 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    DATA = {"habits": getWeekAndHabits()}
+    DATA = {"habits": getCalendarWeekAndHabits()}
     data = json.dumps(DATA)
     return(data)
 
@@ -53,10 +54,34 @@ def updateCompletionDate():
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
         
-    DATA = {"habits": getWeekAndHabits()}
+    #need to update this so that it knows the view and returns correct 
+    #date_headers
+    DATA = {"habits": getCalendarWeekAndHabits()}
     data = json.dumps(DATA)
     return(data)
 
+
+@bp.route('/update-view', methods=["POST"])
+def getUserHabitView():
+    response_json = flask.request.json
+    #Briana: this can be done better, but I'm not sure of how rn
+    view = response_json['view_string']
+    if view == 'past_seven_days':
+        DATA = {"habits": getPastWeekAndHabits(),
+                "day_headers": getPastNDayNumbers(6),
+                }
+    elif view == 'past_month':
+        DATA = {"habits": getPastMonthAndHabits(),
+                "day_headers": getPastNDayNumbers(29),
+                }
+    else:
+        DATA = {"habits": getCalendarWeekAndHabits(),
+                "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+                }
+
+    data = json.dumps(DATA)
+    return(data)
+    
 app.register_blueprint(bp)
 
 

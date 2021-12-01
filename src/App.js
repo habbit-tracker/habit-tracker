@@ -7,11 +7,14 @@ import { HabitTable } from './HabitTable.js';
 
 
 function ViewsMenuBar(props) {
+  //TODO: create enum rather than string for views
   return (<ListGroup horizontal>
-    <ListGroup.Item action>This Week</ListGroup.Item>
-    <ListGroup.Item action>Past 7 Days</ListGroup.Item>
-    <ListGroup.Item action>This Month</ListGroup.Item>
-    <ListGroup.Item action>Past Month</ListGroup.Item>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('this_week')}>This Week</ListGroup.Item>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_seven_days')}>Past 7 Days</ListGroup.Item>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_month')}>Past Month</ListGroup.Item>
+
+
+
   </ListGroup>
   );
 }
@@ -89,8 +92,12 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
-  const [habits, setHabits] = useState(args.habits);
-  console.log(habits);
+  // const [habits, setHabits] = useState(args.habits);
+  // const [dayHeaders, setDayHeaders] = useState(args.day_headers)
+  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers])
+  let habits = habitsAndHeaders[0];
+  let headers = habitsAndHeaders[1];
+  //console.log(habits);
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -131,7 +138,7 @@ function App() {
       }),
     }).then((response) => response.json())
       .then((data) => {
-        setHabits(data.habits);
+        setHH([data.habits, headers]);
       });
 
 
@@ -158,7 +165,29 @@ function App() {
       }),
     }).then(response => response.json())
       .then((data) => {
-        setHabits(data.habits);
+        setHH([data.habits, headers]);
+
+      });
+  }
+
+  function handleViewChange(view_str) {
+
+    //Sends over user view type in JSON form.
+    fetch('/update-view', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "view_string": view_str,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        console.log(data)
+        setHH([data.habits, data.day_headers]);
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
+
       });
   }
 
@@ -167,10 +196,10 @@ function App() {
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
 
-      <ViewsMenuBar />
+      <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
 
-      <HabitTable habits={habits} onSquareClick={handleSquareClick} />
+      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
       <AddHabit onClick={handleModalShow} />
       <br /> <br /> <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
