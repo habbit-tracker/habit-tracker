@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers
+from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers, getBestMonthHabit, getBestWeekHabit
 import os
 import json
 import requests
@@ -27,8 +27,10 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
+    messages = getHabitMessages()
     DATA = {"habits": getCalendarWeekAndHabits(),
             "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+            "messages": messages,
             }
     data = json.dumps(DATA)
     return flask.render_template(
@@ -72,14 +74,20 @@ def getUserHabitView():
     if view == 'past_seven_days':
         DATA = {"habits": getPastWeekAndHabits(),
                 "day_headers": getPastNDayNumbers(6),
+                "messages": getHabitMessages(),
+
                 }
     elif view == 'past_month':
         DATA = {"habits": getPastMonthAndHabits(),
                 "day_headers": getPastNDayNumbers(29),
+                "messages": getHabitMessages(),
+
                 }
     else:
         DATA = {"habits": getCalendarWeekAndHabits(),
                 "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+                "messages": getHabitMessages(),
+
                 }
 
     data = json.dumps(DATA)
@@ -223,14 +231,26 @@ def getDataFromHeaders(headers):
     data_dict = {}
 
     if len(headers) == 30:
-            data_dict = {"habits": getPastMonthAndHabits(),}
+            data_dict = {"habits": getPastMonthAndHabits(),
+                        "messages": getHabitMessages(),
+}
     else:
         if "M" in headers:
-            data_dict = {"habits": getCalendarWeekAndHabits(),}
+            data_dict = {"habits": getCalendarWeekAndHabits(),
+                        "messages": getHabitMessages(),
+}
         else:
-            data_didct = {"habits": getPastWeekAndHabits(),}
+            data_didct = {"habits": getPastWeekAndHabits(),
+                        "messages": getHabitMessages(),
+}
     return data_dict
 
+
+def getHabitMessages():
+    messages = []
+    messages.append(getBestMonthHabit())
+    messages.append(getBestWeekHabit())
+    return messages
 
 if __name__ == "__main__":
     app.run(

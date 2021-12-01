@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
+import { CardContainer } from './HabitInfoCard.js';
 
 
 function ViewsMenuBar(props) {
@@ -94,9 +95,11 @@ function App() {
   const args = JSON.parse(document.getElementById("data").text);
 
   //TODO: implement current_views state to make client server interaction smoother
-  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers])
+  //Split up state
+  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers, args.messages])
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
+  //let messages = habitsAndHeaders.messages[2];
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -138,7 +141,7 @@ function App() {
       }),
     }).then((response) => response.json())
       .then((data) => {
-        setHH([data.habits, headers]);
+        setHH([data.habits, headers, data.messages]);
       });
 
 
@@ -166,7 +169,8 @@ function App() {
       }),
     }).then(response => response.json())
       .then((data) => {
-        setHH([data.habits, headers]);
+        setHH([data.habits, headers, data.messages]);
+        //messages = habitsAndHeaders[2];
 
       });
   }
@@ -185,9 +189,10 @@ function App() {
     }).then(response => response.json())
       .then((data) => {
         console.log(data)
-        setHH([data.habits, data.day_headers]);
+        setHH([data.habits, data.day_headers, data.messages]);
         habits = habitsAndHeaders[0];
         headers = habitsAndHeaders[1];
+        //messages = habitsAndHeaders[2];
 
       });
   }
@@ -202,6 +207,8 @@ function App() {
 
       <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
       <AddHabit onClick={handleModalShow} />
+      <br /> <br /> <br />
+      <CardContainer messages={habitsAndHeaders[2]} />
       <br /> <br /> <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
 

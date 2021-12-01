@@ -238,7 +238,55 @@ def removeCompletionDate(client_json):
 def orderHabitList(unorderd_dict_list):
     ordered_list = sorted(unorderd_dict_list, key = lambda i: i['habit_title'])
     return ordered_list
-        
+
+
+
+def getBestMonthHabit():
+
+    best_habit = None
+    highest_count = 0
+
+    user_habits = getUserHabits()
+    habits = []
+    for habit in user_habits:
+        current_count = 0
+        completed_dates = pickle.loads(habit.dates_completed)
+        past_months_dates = getPastNDates(29) #previous 29 days and today
+
+        current_month_completed = []
+        for month_date in past_months_dates:
+            if(month_date in completed_dates):
+                current_count += 1
+
+        if current_count > highest_count:
+            highest_count = current_count
+            best_habit = habit.title
+
+    return "You've completed " + best_habit + " the most this past month! You completed it " + str(highest_count) + " days!"
+
+def getBestWeekHabit():
+
+    best_habit = None
+    highest_count = 0
+
+    user_habits = getUserHabits()
+    habits = []
+    for habit in user_habits:
+        current_count = 0
+        completed_dates = pickle.loads(habit.dates_completed)
+        past_weeks_dates = getPastNDates(6) #previous 29 days and today
+
+        current_month_completed = []
+        for week_date in past_weeks_dates:
+            if(week_date in completed_dates):
+                current_count += 1
+
+        if current_count > highest_count:
+            highest_count = current_count
+            best_habit = habit.title
+
+    return "You've completed " + best_habit + " the most this past week! You completed it " + str(highest_count) + " days!"    
+
 
 def addTestHabit():
     today = date.today()
