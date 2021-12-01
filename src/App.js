@@ -94,7 +94,7 @@ function App() {
   const args = JSON.parse(document.getElementById("data").text);
 
   //TODO: implement current_views state to make client server interaction smoother
-  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers])
+  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers]);
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
 
