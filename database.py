@@ -15,7 +15,7 @@ def getWeekAndHabits():
     This function is used to send user habit data to the client.
 
     Returns:
-        A dictionary which contains the current user's habit title and an array of dictionaries 
+        A list of dictionaries which contain the current user's habit title and an array of dictionaries 
         whose keys are the dates of the current week (from Mon-Friday) and values are either True
         or False depending on if the habit was completed on that day 
     """
@@ -36,13 +36,15 @@ def getWeekAndHabits():
                 'date': week_date.strftime("%Y-%m-%d"),
                 'completed':completed
             })
-
+        #future improvement: just have habit title as key and dates completed as value
         habits.append({
             "habit_title": habit.title,
             "dates_completed": current_week_completed,
         })
 
-    return habits
+    ordered_habits = orderHabitList(habits)
+
+    return ordered_habits
 
 
 def addUserHabit(client_json):
@@ -115,6 +117,10 @@ def removeCompletionDate(client_json):
         db.session.commit()
 
 
+def orderHabitList(unorderd_dict_list):
+    ordered_list = sorted(unorderd_dict_list, key = lambda i: i['habit_title'])
+    return ordered_list
+        
 
 def addTestHabit():
     today = date.today()
