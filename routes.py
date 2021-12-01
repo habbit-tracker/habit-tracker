@@ -7,6 +7,7 @@ import requests
 import flask
 from flask_login import login_user, current_user, LoginManager, login_required, logout_user
 from datetime import date
+from piclinks import piclinks
 
 import base64
 
@@ -46,6 +47,7 @@ def createHabit():
     data = json.dumps(DATA)
     return(data)
 
+
 @bp.route('/update-completion', methods=["POST"])
 def updateCompletionDate():
     response_json = flask.request.json
@@ -54,9 +56,10 @@ def updateCompletionDate():
 
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
-    
+        
     view_headers = response_json['current_view_headers']
     DATA = getDataFromHeaders(view_headers)
+
     data = json.dumps(DATA)
     return(data)
 
@@ -160,6 +163,48 @@ def logout_page():
     logout_user()
     flask.flash("You have logged out!")
     return flask.render_template("logout.html",)
+
+
+@app.route('/profile')
+def profile():
+    i = current_user.id % 5
+    return flask.render_template("profile.html", currentuser=current_user, loginmanager=login_user, piclinks=piclinks[i])
+
+
+@app.route('/changepassword')
+def changepassword():
+    return flask.render_template("change-password.html")
+
+
+@app.route('/changepassword', methods=["POST"])
+def changepassword_post():
+    currentpassword = flask.request.form.get('currentpassword')
+    newpassword = flask.request.form.get('newpassword')
+    newpassword_confirm = flask.request.form.get('confirmnewpassword')
+    encrypt_changed_currentpassword = encodepassword(currentpassword)
+
+    validate_userpassword = UserCredential.query.filter_by(
+        email=current_user.email, password=str(encrypt_changed_currentpassword)).first()
+
+    # Check if email already in database
+    if not validate_userpassword:
+        flask.flash("The Current Password is invalid. Try something else!")
+        return flask.redirect(flask.url_for("changepassword"))
+
+    # Check if password and confirm does not matched
+    if newpassword != newpassword_confirm:
+        flask.flash(
+            "Your New Password did not match your Confirmed Password. Try again!")
+        return flask.redirect(flask.url_for("changepassword"))
+
+    # Pass all conditions, add info to database with encrypted password
+    else:
+        encrypt_newpassword = encodepassword(newpassword)
+        current_user.password = str(encrypt_newpassword)
+        db.session.commit()
+        flask.flash("Password updated successfully!")
+
+        return flask.redirect(flask.url_for("profile"))
 
 
 @app.route('/')
