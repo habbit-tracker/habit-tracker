@@ -97,6 +97,7 @@ function App() {
   //TODO: implement current_views state to make client server interaction smoother
   //Split up state
   const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers, args.messages])
+
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
   //let messages = habitsAndHeaders.messages[2];

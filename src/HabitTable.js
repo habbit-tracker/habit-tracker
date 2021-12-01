@@ -13,7 +13,9 @@ function HabitSquare(props) {
     const date = props.dateAndStatus['date'];
     if (props.dateAndStatus['completed'] == true) {
         return (
-            <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'removing')}>X</td>
+            <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'removing')}>
+                <div className="habit-square-filler" />
+            </td>
         );
     }
     return (
