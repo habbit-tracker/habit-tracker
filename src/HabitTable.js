@@ -13,7 +13,9 @@ function HabitSquare(props) {
     const date = props.dateAndStatus['date'];
     if (props.dateAndStatus['completed'] == true) {
         return (
-            <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'removing')}>X</td>
+            <td className="habit-square" onClick={() => props.onSquareClick(title, date, 'removing')}>
+                <div className="habit-square-filler" />
+            </td>
         );
     }
     return (
@@ -35,49 +37,29 @@ function HabitRow(props) {
 }
 
 export function HabitTable(props) {
-    console.log(props.habits)
+    console.log("headers length")
+    console.log(props.columnHeaders.length);
+    let numOfDays = props.columnHeaders.length;
 
-    function handleSquareClick(title, date, action) {
-        console.log("square clicked");
-
-        console.log(
-            JSON.stringify({
-                "action": action,
-                "title": title,
-                "date": date,
-            }),
-        );
-
-        //Sends habit information to server in JSON form.
-        fetch('/update-completion', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "action": action,
-                "title": title,
-                "date": date,
-            }),
-        }).then(response => response.json());
+    let monthView = false;
+    if (numOfDays == 30) {
+        monthView = true;
     }
+
+
     return (
-        <Table striped bordered className="weekly-view">
+        <Table striped bordered className={monthView ? 'month-view' : 'week-view'}>
             <thead>
                 <tr>
                     <th>Habit</th>
-                    <th>M</th>
-                    <th>T</th>
-                    <th>W</th>
-                    <th>Th</th>
-                    <th>F</th>
-                    <th>Sa</th>
-                    <th>Su</th>
+                    {props.columnHeaders.map((headerText) => (
+                        <th>{headerText}</th>
+                    ))}
                 </tr>
             </thead>
             <tbody>
                 {props.habits.map((habit) => (
-                    <HabitRow habit={habit} numOfDays={7} onSquareClick={handleSquareClick} />
+                    <HabitRow habit={habit} numOfDays={numOfDays} onSquareClick={props.onSquareClick} />
                 ))}
             </tbody>
         </Table>

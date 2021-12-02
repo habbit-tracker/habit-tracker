@@ -1,12 +1,13 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate
+from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers
 import os
 import json
 import requests
 import flask
 from flask_login import login_user, current_user, LoginManager, login_required, logout_user
 from datetime import date
+from piclinks import piclinks
 
 import base64
 
@@ -26,7 +27,9 @@ def load_user(user_name):
 @bp.route('/index')
 @login_required
 def index():
-    DATA = {"habits": getWeekAndHabits()}
+    DATA = {"habits": getCalendarWeekAndHabits(),
+            "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+            }
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -39,8 +42,11 @@ def createHabit():
     response_json = flask.request.json
     addUserHabit(response_json)
 
-    #TODO: update to something more meaningful
-    return flask.jsonify({"status":'success'}) 
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
+    data = json.dumps(DATA)
+    return(data)
+
 
 @bp.route('/update-completion', methods=["POST"])
 def updateCompletionDate():
@@ -51,9 +57,34 @@ def updateCompletionDate():
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
         
-    #TODO: update to something more meaningful
-    return flask.jsonify({"status":'success'}) 
+    view_headers = response_json['current_view_headers']
+    DATA = getDataFromHeaders(view_headers)
 
+    data = json.dumps(DATA)
+    return(data)
+
+
+@bp.route('/update-view', methods=["POST"])
+def getUserHabitView():
+    response_json = flask.request.json
+    #Briana: this can be done better, but I'm not sure of how rn
+    view = response_json['view_string']
+    if view == 'past_seven_days':
+        DATA = {"habits": getPastWeekAndHabits(),
+                "day_headers": getPastNDayNumbers(6),
+                }
+    elif view == 'past_month':
+        DATA = {"habits": getPastMonthAndHabits(),
+                "day_headers": getPastNDayNumbers(29),
+                }
+    else:
+        DATA = {"habits": getCalendarWeekAndHabits(),
+                "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
+                }
+
+    data = json.dumps(DATA)
+    return(data)
+    
 app.register_blueprint(bp)
 
 
@@ -134,9 +165,71 @@ def logout_page():
     return flask.render_template("logout.html",)
 
 
+@app.route('/profile')
+def profile():
+    i = current_user.id % 5
+    return flask.render_template("profile.html", currentuser=current_user, loginmanager=login_user, piclinks=piclinks[i])
+
+
+@app.route('/changepassword')
+def changepassword():
+    return flask.render_template("change-password.html")
+
+
+@app.route('/changepassword', methods=["POST"])
+def changepassword_post():
+    currentpassword = flask.request.form.get('currentpassword')
+    newpassword = flask.request.form.get('newpassword')
+    newpassword_confirm = flask.request.form.get('confirmnewpassword')
+    encrypt_changed_currentpassword = encodepassword(currentpassword)
+
+    validate_userpassword = UserCredential.query.filter_by(
+        email=current_user.email, password=str(encrypt_changed_currentpassword)).first()
+
+    # Check if email already in database
+    if not validate_userpassword:
+        flask.flash("The Current Password is invalid. Try something else!")
+        return flask.redirect(flask.url_for("changepassword"))
+
+    # Check if password and confirm does not matched
+    if newpassword != newpassword_confirm:
+        flask.flash(
+            "Your New Password did not match your Confirmed Password. Try again!")
+        return flask.redirect(flask.url_for("changepassword"))
+
+    # Pass all conditions, add info to database with encrypted password
+    else:
+        encrypt_newpassword = encodepassword(newpassword)
+        current_user.password = str(encrypt_newpassword)
+        db.session.commit()
+        flask.flash("Password updated successfully!")
+
+        return flask.redirect(flask.url_for("profile"))
+
+
 @app.route('/')
 def main():
     return flask.redirect(flask.url_for('login'))
+
+
+def getDataFromHeaders(headers):
+    """
+    Looks at the current view's header list to determine which
+    view the user is currently seeing so that it returns the appropriate 
+    data dictionary of habits
+    - Will update this once I use view state on client side
+     """
+
+    data_dict = {}
+
+    if len(headers) == 30:
+            data_dict = {"habits": getPastMonthAndHabits(),}
+    else:
+        if "M" in headers:
+            data_dict = {"habits": getCalendarWeekAndHabits(),}
+        else:
+            data_didct = {"habits": getPastWeekAndHabits(),}
+    return data_dict
 
 
 if __name__ == "__main__":

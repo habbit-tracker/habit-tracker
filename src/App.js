@@ -2,13 +2,22 @@ import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal } from 'react-bootstrap';/*, Navbar */
+import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
 import Navbar from './components/Navbar';
-/*import { Router } from 'react-router';*/
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+function ViewsMenuBar(props) {
+  //TODO: create enum rather than string for views
+  return (<ListGroup horizontal>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('this_week')}>This Week</ListGroup.Item>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_seven_days')}>Past 7 Days</ListGroup.Item>
+    <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_month')}>Past Month</ListGroup.Item>
+
+  </ListGroup>
+  );
+}
 
 function AddHabit(props) {
   return (
@@ -84,8 +93,11 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
-  const [habits, setHabits] = useState(args.habits);
-  console.log(habits);
+
+  //TODO: implement current_views state to make client server interaction smoother
+  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers]);
+  let habits = habitsAndHeaders[0];
+  let headers = habitsAndHeaders[1];
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -120,9 +132,13 @@ function App() {
       body: JSON.stringify({
         "title": title,
         "category": category,
-        "target_days_str": target_days_str
+        "target_days_str": target_days_str,
+        "current_view_headers": headers,
       }),
-    }).then(response => response.json());
+    }).then((response) => response.json())
+      .then((data) => {
+        setHH([data.habits, headers]);
+      });
 
     //Clears text fields and hides modal
     titleInput.current.value = "";
@@ -130,6 +146,47 @@ function App() {
     handleModalClose();
   }
 
+  //moved to App.js so that it could access the habit state
+  function handleSquareClick(title, date, action) {
+
+    //Sends habit information to server in JSON form.
+    fetch('/update-completion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "action": action,
+        "title": title,
+        "date": date,
+        "current_view_headers": headers,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        setHH([data.habits, headers]);
+      });
+  }
+
+  function handleViewChange(view_str) {
+
+    //Sends over user view type in JSON form.
+    fetch('/update-view', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "view_string": view_str,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        console.log(data)
+        setHH([data.habits, data.day_headers]);
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
+
+      });
+  }
 
   return (
     <>
@@ -139,12 +196,14 @@ function App() {
           <Route path="/about" />
         </Routes>
       </Router>
-      <AddHabit onClick={handleModalShow} />
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
-
+      <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
-      <HabitTable habits={habits} />
+        
+      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
+      <AddHabit onClick={handleModalShow} />
+      <br /><br /> <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
     </>
   );

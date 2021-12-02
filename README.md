@@ -14,7 +14,9 @@ Flask-SQLAlchemy version 2.1
 
 # Heroku URL:
 
-https://habit-tracker-csc4530.herokuapp.com/
+[Sprint 1 Heroku Deployment](https://habit-tracker-csc4530.herokuapp.com/)
+
+[Sprint 2 Heroku Deploymnet](https://habit-tracker-csc4530-sprint2.herokuapp.com/)
 
 # Features and How to Use:
 

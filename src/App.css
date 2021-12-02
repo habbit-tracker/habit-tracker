@@ -37,8 +37,18 @@
   height: 4vw;
 }
 
-.weekly-view {
+.habit-square-filler{
+  width:100%;
+  height:100%;
+  background-color: darkseagreen;
+}
+
+.week-view {
   width: 35vw;
+}
+
+.month-view {
+  width: 90vw;
 }
 
 
