@@ -31,4 +31,7 @@ Current calendar functionality is limited; Calendar can accept habits, and will 
 ![Login page](https://cdn.discordapp.com/attachments/902243050410094686/910347033611730954/unknown.png)
 
 
-On main page please refresh to see habit updates!
+#NPM Installations for Navbar
+- `npm install react-router-dom --save`
+- `npm install react-icons --save`
+- `npm install styled-components`
