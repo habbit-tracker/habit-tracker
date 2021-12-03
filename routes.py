@@ -239,7 +239,7 @@ def getDataFromHeaders(headers):
         if "M" in headers:
             data_dict = {"habits": getCalendarWeekAndHabits(), }
         else:
-            data_didct = {"habits": getPastWeekAndHabits(), }
+            data_dict = {"habits": getPastWeekAndHabits(), }
     return data_dict
 
 
