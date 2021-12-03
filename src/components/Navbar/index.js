@@ -1,27 +1,23 @@
 import React from 'react';
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from './NavbarElements';
+import { Nav, NavLink, Bars, NavMenu, NavBtn, Navilink } from './NavbarElements';
+import { Button } from 'react-bootstrap';
+
 
 const Navbar = () => {
     return (
         <>
             <Nav>
-                <NavLink to="/">
+                <Navilink to="/">
                     <h1>InHabit</h1>
-                </NavLink>
+                </Navilink>
                 <Bars />
                 <NavMenu>
-                    <NavLink to="/about_us" activeStyle>
-                        About
-                    </NavLink>
-                    <NavLink to="../templates/contact_us.html" activeStyle>
-                        Contact Us
-                    </NavLink>
-                    <NavLink to="/profile" activeStyle>
-                        Profile
-                    </NavLink>
+                    <Navilink id="about" href="/about" variant="info">About</Navilink>
+                    <Navilink id="contactus" href="/contactus" variant="info">Contact Us</Navilink>
+                    <Navilink id="profile" href="/profile" variant="white">Profile</Navilink>
                 </NavMenu>
                 <NavBtn>
-                    <NavBtnLink to="/log-in">Log Out</NavBtnLink>
+                    <a href="/logout"><Button variant="success" id="logout">Log Out!</Button></a>
                 </NavBtn>
             </Nav>
         </>

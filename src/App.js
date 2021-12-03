@@ -192,19 +192,14 @@ function App() {
     <>
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/about" />
-        </Routes>
       </Router>
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
       <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
-        
-      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
+
       <AddHabit onClick={handleModalShow} />
-      <br /><br /> <br />
-      <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
+      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
     </>
   );
 
