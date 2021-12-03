@@ -1,11 +1,13 @@
 import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
 import { CardContainer } from './HabitInfoCard.js';
-
+import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function ViewsMenuBar(props) {
   //TODO: create enum rather than string for views
@@ -14,11 +16,10 @@ function ViewsMenuBar(props) {
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_seven_days')}>Past 7 Days</ListGroup.Item>
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_month')}>Past Month</ListGroup.Item>
 
-
-
   </ListGroup>
   );
 }
+
 function AddHabit(props) {
   return (
     <Button variant="outline-success" onClick={props.onClick}>Add Habit</Button>
@@ -110,8 +111,6 @@ function App() {
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
-  const [view, setView] = useState();
-
   function onCreateClick() {
 
     let title = titleInput.current.value;
@@ -145,12 +144,10 @@ function App() {
         setHH([data.habits, headers, data.messages]);
       });
 
-
     //Clears text fields and hides modal
     titleInput.current.value = "";
     categoryInput.current.value = "";
     handleModalClose();
-
   }
 
   //moved to App.js so that it could access the habit state
@@ -172,6 +169,7 @@ function App() {
       .then((data) => {
         setHH([data.habits, headers, data.messages]);
         //messages = habitsAndHeaders[2];
+
 
       });
   }
@@ -200,19 +198,24 @@ function App() {
 
   return (
     <>
+      <Router>
+        <Navbar />
+      </Router>
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
-
       <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
 
-      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
       <AddHabit onClick={handleModalShow} />
+<<<<<<< HEAD
       <br /> <br /> <br />
       <CardContainer messages={habitsAndHeaders[2]} />
       <br /> <br /> <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
 
+=======
+      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
+>>>>>>> main
     </>
   );
 
