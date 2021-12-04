@@ -240,7 +240,6 @@ function App() {
       <AddHabit onClick={handleModalShow} />
       <br />
       <div style={{width:400,height:400,}}>
-        <p>Hello there!</p>
         <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
       </div>
       <br />
