@@ -7,6 +7,9 @@ import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import './piechart.js';
 
 function ViewsMenuBar(props) {
   //TODO: create enum rather than string for views
@@ -93,6 +96,40 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
+  let pieChartData = args.pie_chart_data;
+  var canvas = document.createElement('canvas');
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  var data = {
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    datasets: [{
+      label: "Habits Completed Each Day This Week",
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 2,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: pieChartData,
+    }]
+  };
+
+  var options = {
+    maintainAspectRatio: false,
+    radius: '200'
+  };
 
   //TODO: implement current_views state to make client server interaction smoother
   const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers]);
@@ -188,6 +225,8 @@ function App() {
       });
   }
 
+  
+
   return (
     <>
       <Router>
@@ -200,10 +239,15 @@ function App() {
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
       <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
-        
       <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
       <AddHabit onClick={handleModalShow} />
-      <br /><br /> <br />
+      <br />
+      <div style={{width:400,height:400,}}>
+        <p>Hello there!</p>
+        <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
+      </div>
+      <br />
+      <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
     </>
   );

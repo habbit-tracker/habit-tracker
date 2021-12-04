@@ -5,6 +5,31 @@ from datetime import date, datetime, timedelta
 from models import UserCredential, Habit
 from flask_login import current_user
 
+def getPieChartData():
+    """
+    This function is used to determine how many habits were completed by a user
+    each day for the current calendar week
+    
+    Returns:
+    completion_counts: A list of 7 integers, where each integer represents how many habits were completed 
+    on a specific day of the calendar week starting with Monday and ending with Sunday.
+    
+    example output: [3,5,4,0,2,0,0]
+    This means that 3 habits were completed on Monday, 5 habits on Tuesday, 4 habits on Wednesday and so on.
+    """
+
+    week_habits = getCalendarWeekAndHabits()
+    completion_counts = [0,0,0,0,0,0,0]
+
+    for habit_dict in week_habits:
+        current_week = habit_dict['dates_completed']
+        for i in range(len(current_week)):
+            current_completion = current_week[i]['completed']
+            if current_completion  == True:
+                completion_counts[i] += 1
+
+    return(completion_counts)
+
 def getUserHabits():
     user_habits = Habit.query.filter_by(user=current_user.id).all() #temporarily hardcoded
     return user_habits
