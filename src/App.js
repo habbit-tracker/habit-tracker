@@ -2,9 +2,10 @@ import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
+import { Button, Form, Modal, ListGroup, Row, Container, Col, Stack } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
+import { HabitCardContainer } from './HabitCardContainer.js';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -12,7 +13,6 @@ import { Pie } from 'react-chartjs-2';
 import './piechart.js';
 
 function ViewsMenuBar(props) {
-  //TODO: create enum rather than string for views
   return (<ListGroup horizontal>
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('this_week')}>This Week</ListGroup.Item>
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_seven_days')}>Past 7 Days</ListGroup.Item>
@@ -24,7 +24,7 @@ function ViewsMenuBar(props) {
 
 function AddHabit(props) {
   return (
-    <Button variant="outline-success" onClick={props.onClick}>Add Habit</Button>
+    <Button variant="outline-success" onClick={props.onClick}>+ Add Habit</Button>
   );
 }
 
@@ -131,8 +131,7 @@ function App() {
     radius: '200'
   };
 
-  //TODO: implement current_views state to make client server interaction smoother
-  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers]);
+  const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers, args.messages])
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
 
@@ -174,7 +173,9 @@ function App() {
       }),
     }).then((response) => response.json())
       .then((data) => {
-        setHH([data.habits, headers]);
+        setHH([data.habits, headers, data.messages]);
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
       });
 
     //Clears text fields and hides modal
@@ -200,7 +201,12 @@ function App() {
       }),
     }).then(response => response.json())
       .then((data) => {
-        setHH([data.habits, headers]);
+        console.log(data)
+        setHH([data.habits, headers, data.messages]);
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
+
+
       });
   }
 
@@ -218,35 +224,48 @@ function App() {
     }).then(response => response.json())
       .then((data) => {
         console.log(data)
-        setHH([data.habits, data.day_headers]);
+        setHH([data.habits, data.day_headers, data.messages]);
         habits = habitsAndHeaders[0];
         headers = habitsAndHeaders[1];
 
       });
   }
 
-  
+
 
   return (
     <>
       <Router>
         <Navbar />
       </Router>
+
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
       <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
-      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
-      <AddHabit onClick={handleModalShow} />
-      <br />
-      <div style={{width:400,height:400,}}>
-        <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
-      </div>
-      <br />
-      <br />
-      <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
-      <AddHabit onClick={handleModalShow} />
-      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
+
+      <Container fluid >
+        <Row>
+          <Col lg="auto">
+            <AddHabit onClick={handleModalShow} />
+            <br /> <br />
+            <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
+
+          </Col >
+          <Col lg={{ offset: .25 }}>
+            <br /> <br />
+            <HabitCardContainer messages={habitsAndHeaders[2]} />
+            <br /> <br />
+            <Stack gap={2} className="col-md-5 mx-auto">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><b>Habit count per day this week. Updates on refresh </b></div>
+              <div style={{ width: 400, height: 400, }}>
+                <canvas id="habitPie" style={{ width: 400, height: 400, border: 'black solid 1px' }}></canvas>
+              </div>
+            </Stack>
+
+          </Col >
+        </Row>
+      </Container>
     </>
   );
 

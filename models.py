@@ -20,4 +20,12 @@ class Habit(db.Model):
     dates_completed = db.Column(db.PickleType)
 
 
+class UserInformation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(50), default='None')
+    user = db.Column(db.Integer, default='None')
+    username = db.Column(db.String(50), default='None')
+    phone_number = db.Column(db.String(14), default='None')
+    title = db.Column(db.String(50), default='None')
+    location = db.Column(db.String(50), default='None')
 db.create_all()
