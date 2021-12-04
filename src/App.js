@@ -231,9 +231,6 @@ function App() {
     <>
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/about" />
-        </Routes>
       </Router>
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
@@ -243,12 +240,13 @@ function App() {
       <AddHabit onClick={handleModalShow} />
       <br />
       <div style={{width:400,height:400,}}>
-        <p>Hello there!</p>
         <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
       </div>
       <br />
       <br />
       <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
+      <AddHabit onClick={handleModalShow} />
+      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
     </>
   );
 

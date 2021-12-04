@@ -1,9 +1,12 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <title>Edit Profile Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap 4 CDN link -->
+    <link rel="stylesheet"
+        herf="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- font-awesome 5 CDN link -->
@@ -11,195 +14,168 @@
         integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* SignUp Page CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: #f0f7fd;
+            background-color: #f9f9fa
         }
 
-        .container {
-            position: absolute;
-            max-width: 800px;
-            height: 500px;
-            margin: auto;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .padding {
+            padding: 3rem !important
         }
 
-        .myRightCtn {
-            position: relative;
-            background-image: linear-gradient(45deg, #a1d5ff, #1193fd);
-            border-radius: 25px;
-            height: 100%;
-            padding: 25px;
-            color: rgb(0, 0, 0);
-            font-size: 12px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .user-card-full {
+            overflow: hidden
         }
 
-        .myLeftCtn {
-            position: relative;
-            background: #fff;
-            border-radius: 25px;
-            height: 100%;
-            padding: 25px;
-            padding-left: 50px;
-        }
-
-        .myLeftCtn header {
-            color: rgb(0, 141, 206);
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .row {
-            height: 100%;
-        }
-
-        .myCard {
-            position: relative;
-            background: #fff;
-            height: 100%;
-            border-radius: 25px;
-            -webkit-box-shadow: 0px 10px 40px -10px rgba(0, 0, 0, 0.7);
-            -moz-box-shadow: 0px 10px 40px -10px rgba(0, 0, 0, 0.7);
-            box-shadow: 0px 10px 40px -10px rgba(0, 0, 0, 0.7);
-        }
-
-        .myRightCtn header {
-            color: #fff;
-            font-size: 44px;
-        }
-
-        .box {
-            position: relative;
-            margin: 20px;
-            margin-bottom: 100px;
-        }
-
-        .myLeftCtn .myInput {
-            width: 230px;
-            border-radius: 25px;
-            padding: 10px;
-            padding-left: 50px;
+        .card {
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+            box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
             border: none;
-            -webkit-box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
-            -moz-box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
-            box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
+            margin-bottom: 30px
         }
 
-        .myLeftCtn .myInput:focus {
-            outline: none;
+        .m-r-0 {
+            margin-right: 0px
         }
 
-        .myForm {
-            position: relative;
-            margin-top: 50px;
+        .m-l-0 {
+            margin-left: 0px
         }
 
-        .myLeftCtn .butt {
-            background: linear-gradient(45deg, #a1d5ff, #1193fd);
-            color: #fff;
-            width: 230px;
-            border: none;
-            border-radius: 25px;
-            margin-left: 20px;
-            padding: 10px;
-            -webkit-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
-            -moz-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
-            box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+        .user-card-full .user-profile {
+            border-radius: 5px 0 0 5px
         }
 
-        .myLeftCtn .butt:hover {
-            background-image: linear-gradient(45deg, #93cffd, #4cacfc);
+        .bg-c-lite-green {
+            background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+            background: linear-gradient(to right, #ee5a6f, #f29263)
         }
 
-        .myLeftCtn .butt:focus {
-            outline: none;
+        .user-profile {
+            padding: 20px 0
         }
 
-        .myLeftCtn .fas {
-            position: relative;
-            color: #36befd;
-            left: 36px;
+        .card-block {
+            padding: 1.25rem
         }
 
-        .butt_out {
-            background: transparent;
-            color: #fff;
-            width: 120px;
-            border: 2px solid#fff;
-            border-radius: 25px;
-            padding: 10px;
-            -webkit-box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
-            -moz-box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
-            box-shadow: 0px 10px 49px -14px rgba(0, 0, 0, 0.7);
+        .m-b-25 {
+            margin-bottom: 25px
         }
 
-        .butt_out:hover {
-            border: 2px solid#cbe8ff;
+        .img-radius {
+            border-radius: 5px
         }
 
-        .butt_out:focus {
-            outline: none;
+        h6 {
+            font-size: 14px
         }
 
-        .error {
-            color: red;
+        .card .card-block p {
+            line-height: 25px
         }
 
-        .toggle {
-            font-size: medium;
-            padding-top: 20px;
+        @media only screen and (min-width: 1400px) {
+            p {
+                font-size: 14px
+            }
         }
 
-        a.toggle {
-            color: white;
-            font-weight: 900;
+        .card-block {
+            padding: 1.25rem
         }
 
-        /* SignUp Page CSS */
-
-        /*Profile CSS*/
-
-
-        .gradient-custom {
-            /* fallback for old browsers */
-            background: #f6d365;
-
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+        .b-b-default {
+            border-bottom: 1px solid #e0e0e0
         }
 
-        /*Profile CSS*/
+        .m-b-20 {
+            margin-bottom: 20px
+        }
+
+        .p-b-5 {
+            padding-bottom: 5px !important
+        }
+
+        .card .card-block p {
+            line-height: 25px
+        }
+
+        .m-b-10 {
+            margin-bottom: 10px
+        }
+
+        .text-muted {
+            color: #919aa3 !important
+        }
+
+        .b-b-default {
+            border-bottom: 1px solid #e0e0e0
+        }
+
+        .f-w-600 {
+            font-weight: 600
+        }
+
+        .m-b-20 {
+            margin-bottom: 20px
+        }
+
+        .m-t-40 {
+            margin-top: 20px
+        }
+
+        .p-b-5 {
+            padding-bottom: 5px !important
+        }
+
+        .m-b-10 {
+            margin-bottom: 10px
+        }
+
+        .m-t-40 {
+            margin-top: 20px
+        }
+
+        .user-card-full .social-link li {
+            display: inline-block
+        }
+
+        .user-card-full .social-link li a {
+            font-size: 20px;
+            margin: 0 10px 0 0;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="myCard">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="myLeftCtn">
-                        <div class="text-center">
-                            <img id="profile_img" src={{piclinks}} alt="">
-                            <header>{{currentuser.id}}</header>
-                            <header>{{currentuser.username}}</header>
-                            <header>{{currentuser.email}}</header>
-                            <header>{{currentuser.password}}</header>
+        <div class="main-body">
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="main-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                </ol>
+            </nav>
+            <!-- /Breadcrumb -->
+
+            <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img id="profile_img" src={{piclinks}} alt="" class="rounded-circle" width="150">
+
+                                <div class="mt-3">
+                                    <!-- <h4>Unknown Name</h4> -->
+                                    <!-- <p class="text-secondary mb-1">Software Engineer</p>
+                                    <p class="text-muted font-size-sm">Atlanta, Georgia</p> -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,7 +186,74 @@
                             <p class="toggle"><a class="toggle" href="{{ url_for('changepassword') }}">Change Password</a></p>
                             <p class="toggle"><a class="toggle" href="{{ url_for('profileedit') }}">
                                 Edit Profile</a></p>
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <!-- <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Full Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    Unknown Name
+                                </div>
+                            </div>
+                            <hr> -->
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">User Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{currentuser.username}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{currentuser.email}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    (123) 456-7890
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Mobile</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    (123) 456-7890
+                                </div>
+                            </div>
+                            <hr> -->
+                            <!-- <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Address</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    Atlanta, Georgia
+                                </div>
+                            </div> -->
+                            <!-- <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-info " target="__blank" href="">Update</a>
+                                </div>
+                            </div> -->
                         </div>
+                    </div>
+                    <div>
+                        <a class="btn btn-info" href="/changepassword">
+                            Change Password
+                        </a>
                     </div>
                 </div>
             </div>
