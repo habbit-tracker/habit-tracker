@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Edit Profile Page</title>
+    <title>Profile Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap 4 CDN link -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -196,20 +196,31 @@
                     <div class="myLeftCtn">
                         <div class="text-center">
                             <img id="profile_img" src={{piclinks}} alt="">
-                            <header>{{currentuser.id}}</header>
-                            <header>{{currentuser.username}}</header>
-                            <header>{{currentuser.email}}</header>
-                            <header>{{currentuser.password}}</header>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="myRightCtn">
-                        <div class="box">
-                            <header>Profile Page</header>
-                            <p class="toggle"><a class="toggle" href="{{ url_for('changepassword') }}">Change Password</a></p>
-                            <p class="toggle"><a class="toggle" href="{{ url_for('profileedit') }}">
-                                Edit Profile</a></p>
+                        <form action="/profileedit" method="POST" class="myForm text-center">
+                            <header>Edit Profile</header>
+
+                            <div class="form-group">
+                                <i class="fas fa-lock"></i>
+                                <input class="myInput" type="text" placeholder="New Username" id="newusername"
+                                    name="newusername" required>
+                            </div>
+
+                            <div class="form-group">
+                                <i class="fas fa-lock"></i>
+                                <input class="myInput" type="text" placeholder="New Email"
+                                    id="newemail" name="newemail" required>
+                            </div>
+                            <p class="error">
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                                {% endif %}
+                                {% endwith %}
+                            </p>
+                            <input type="submit" class="butt" value="Update Profile">
+                        </form>
                         </div>
                     </div>
                 </div>

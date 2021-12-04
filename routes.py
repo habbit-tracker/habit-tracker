@@ -172,6 +172,23 @@ def profile():
     return flask.render_template("profile.html", currentuser=current_user, loginmanager=login_user, piclinks=piclinks[i])
 
 
+@app.route('/profileedit')
+def profileedit():
+    return flask.render_template("profile-edit.html")
+
+
+@app.route('/profileedit', methods=["POST"])
+def profileedit_post():
+    newusername = flask.request.form.get('newusername')
+    newemail = flask.request.form.get('newemail')
+    current_user.username = str(newusername)
+    current_user.email = str(newemail)
+    db.session.commit()
+    flask.flash("Profile updated successfully!")
+
+    return flask.redirect(flask.url_for("profile"))
+
+
 @app.route('/changepassword')
 def changepassword():
     return flask.render_template("change-password.html")
