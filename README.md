@@ -4,7 +4,7 @@
 
 [Sprint 1 Heroku Deployment](https://habit-tracker-csc4530.herokuapp.com/)
 
-[Sprint 2 Heroku Deploymnet](https://habit-tracker-csc4530-sprint2.herokuapp.com/)
+[Sprint 2 Heroku Deployment](https://habit-tracker-csc4530-sprint2.herokuapp.com/)
 
 ### Group Members
 
