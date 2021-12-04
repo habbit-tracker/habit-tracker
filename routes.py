@@ -57,7 +57,7 @@ def updateCompletionDate():
 
     elif response_json['action'] == 'removing':
         removeCompletionDate(response_json)
-        
+
     view_headers = response_json['current_view_headers']
     DATA = getDataFromHeaders(view_headers)
 
@@ -68,7 +68,7 @@ def updateCompletionDate():
 @bp.route('/update-view', methods=["POST"])
 def getUserHabitView():
     response_json = flask.request.json
-    #Briana: this can be done better, but I'm not sure of how rn
+    # Briana: this can be done better, but I'm not sure of how rn
     view = response_json['view_string']
     if view == 'past_seven_days':
         DATA = {"habits": getPastWeekAndHabits(),
@@ -85,7 +85,8 @@ def getUserHabitView():
 
     data = json.dumps(DATA)
     return(data)
-    
+
+
 app.register_blueprint(bp)
 
 
@@ -172,6 +173,16 @@ def profile():
     return flask.render_template("profile.html", currentuser=current_user, loginmanager=login_user, piclinks=piclinks[i])
 
 
+@app.route('/contactus')
+def contactus():
+    return flask.render_template("contact_us.html")
+
+
+@app.route('/about')
+def about():
+    return flask.render_template("about.html")
+
+
 @app.route('/changepassword')
 def changepassword():
     return flask.render_template("change-password.html")
@@ -224,12 +235,12 @@ def getDataFromHeaders(headers):
     data_dict = {}
 
     if len(headers) == 30:
-            data_dict = {"habits": getPastMonthAndHabits(),}
+        data_dict = {"habits": getPastMonthAndHabits(), }
     else:
         if "M" in headers:
-            data_dict = {"habits": getCalendarWeekAndHabits(),}
+            data_dict = {"habits": getCalendarWeekAndHabits(), }
         else:
-            data_didct = {"habits": getPastWeekAndHabits(),}
+            data_dict = {"habits": getPastWeekAndHabits(), }
     return data_dict
 
 

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+        }
+
+        html {
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        .column {
+            float: left;
+            width: 33.3%;
+            margin-bottom: 16px;
+            padding: 0 8px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: 8px;
+        }
+
+        .contact-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #82d1f0;
+            color: rgb(255, 255, 255);
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        .container::after,
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .title {
+            color: grey;
+        }
+
+        .button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        @media screen and (max-width: 650px) {
+            .column {
+                width: 100%;
+                display: block;
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        herf="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- font-awesome 5 CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+        integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Contact Us</title>
+</head>
+
+<body>
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+        </ol>
+    </nav>
+    <div class="contact-section">
+        <h1>Contact Us</h1>
+    </div>
+
+    <h1 style="text-align:center">Our Team</h1>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <!-- <img src="/src/male_dummy.jpg" alt="Dhruv" style="width:77%"> -->
+                <div class="container">
+                    <h2>Dhruv Parikh</h2>
+                    <p class="title">Web Page Designer/FrontEnd</p>
+                    <p>Worked on the design aspect of the page.</p>
+                    <p><b>Email: dparikh5@student.gsu.edu</b></p>
+                    <p><a href="mailto:dparikh5@student.gsu.edu"></a><button class="button">Contact</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <!-- <img src="/src/female_dummy.jpg" alt="Briana" style="width:70%"> -->
+                <div class="container">
+                    <h2>Briana Mason</h2>
+                    <p class="title">Title</p>
+                    <p>"Worked on the database, authentication, and logic for habit table"</p>
+                    <p><b>Email: bmason16@student.gsu.edu</b></p>
+                    <p><a href="mailto:bmason16@student.gsu.edu"></a><button class="button">Contact</button></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <!-- <img src="/w3images/team3.jpg" alt="John" style="width:100%"> -->
+                <div class="container">
+                    <h2>Khoa Cao</h2>
+                    <p class="title">Full Stack</p>
+                    <p>Worked on logic, database, and UX.</p>
+                    <p><b>kcao5@student.gsu.edu</b></p>
+                    <p><a href="mailto:kcao5@student.gsu.edu"></a><button class="button">Contact</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <!-- <img src="/src/male_dummy.jpg" alt="Dhruv" style="width:77%"> -->
+                <div class="container">
+                    <h2>Susanna Stott</h2>
+                    <p class="title">FrontEnd/BackEnd</p>
+                    <p>Worked on frontend, backend and handling data manipulation.</p>
+                    <p><b>Email: sstott1@student.gsu.edu</b></p>
+                    <p><a href="mailto:sstott1@student.gsu.edu"></a><button class="button">Contact</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
