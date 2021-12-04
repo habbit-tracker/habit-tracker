@@ -1,3 +1,4 @@
+from typing import final
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 import pickle
@@ -286,15 +287,18 @@ def getBWMonthHabits():
         if current_count <= lowest_count:
             lowest_count = current_count
             worst_habits[habit.title] = current_count
+
         
-        final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
-        final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
+    final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
+    final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
 
-
-
-    best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past month! \n Completed: " + str(highest_count) + " days"   
-    worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past month. \n Completed:  " + str(lowest_count) + " days"   
-    return [best_habit_str, worst_habit_str] 
+    
+    if final_best_habits == [] or final_worst_habits == []:
+        return ["You need to add more habits, before you can see data", "You need to add more habits, before you can see data"]
+    else:
+        best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past month! \n Completed: " + str(highest_count) + " days"   
+        worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past month. \n Completed:  " + str(lowest_count) + " days"   
+        return [best_habit_str, worst_habit_str] 
 
 def getBWWeekHabits():
 
@@ -323,12 +327,18 @@ def getBWWeekHabits():
             lowest_count = current_count
             worst_habits[habit.title] = current_count
         
-        final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
-        final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
 
-    best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past seven days! \n Completed: " + str(highest_count) + " days"   
-    worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past seven days. \n Completed:  " + str(lowest_count) + " days"   
-    return [best_habit_str, worst_habit_str] 
+    final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
+    final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
+    print(final_best_habits)
+    print(final_worst_habits)
+
+    if final_best_habits == [] or final_worst_habits == []:
+        return ["You need to add more habits, before you can see data", "You need to add more habits, before you can see data"]
+    else:
+        best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past month! \n Completed: " + str(highest_count) + " days"   
+        worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past month. \n Completed:  " + str(lowest_count) + " days"   
+        return [best_habit_str, worst_habit_str] 
 
 
 def addTestHabit():
