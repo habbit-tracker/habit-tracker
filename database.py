@@ -193,7 +193,6 @@ def getPastNDayNumbers(num_days):
         day_numbers.append(current_date.day)
     
     day_numbers.append(today.day)
-    print(day_numbers)
     return(day_numbers)
 
 
@@ -236,10 +235,12 @@ def orderHabitList(unorderd_dict_list):
 
 
 
-def getBestMonthHabit():
+def getBWMonthHabits():
 
-    best_habit = None
-    highest_count = 0
+    best_habits= {}
+    worst_habits = {}
+    highest_count = float('-inf')
+    lowest_count = float('inf')
 
     user_habits = getUserHabits()
     habits = []
@@ -253,34 +254,56 @@ def getBestMonthHabit():
             if(month_date in completed_dates):
                 current_count += 1
 
-        if current_count > highest_count:
+        if current_count >= highest_count:
             highest_count = current_count
-            best_habit = habit.title
+            best_habits[habit.title] = current_count
 
-    return "You've completed " + best_habit + " the most this past month! You completed it " + str(highest_count) + " days!"
+        if current_count <= lowest_count:
+            lowest_count = current_count
+            worst_habits[habit.title] = current_count
+        
+        final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
+        final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
 
-def getBestWeekHabit():
 
-    best_habit = None
-    highest_count = 0
+
+    best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past month! \n Completed: " + str(highest_count) + " days"   
+    worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past month. \n Completed:  " + str(lowest_count) + " days"   
+    return [best_habit_str, worst_habit_str] 
+
+def getBWWeekHabits():
+
+    best_habits = {}
+    worst_habits = {}
+    highest_count = float('-inf')
+    lowest_count = float('inf')
 
     user_habits = getUserHabits()
     habits = []
     for habit in user_habits:
         current_count = 0
         completed_dates = pickle.loads(habit.dates_completed)
-        past_weeks_dates = getPastNDates(6) #previous 29 days and today
+        past_weeks_dates = getPastNDates(6) #previous 6 days and today
 
         current_month_completed = []
         for week_date in past_weeks_dates:
             if(week_date in completed_dates):
                 current_count += 1
 
-        if current_count > highest_count:
+        if current_count >= highest_count:
             highest_count = current_count
-            best_habit = habit.title
+            best_habits[habit.title] = current_count
 
-    return "You've completed " + best_habit + " the most this past week! You completed it " + str(highest_count) + " days!"    
+        if current_count <= lowest_count:
+            lowest_count = current_count
+            worst_habits[habit.title] = current_count
+        
+        final_best_habits = [k for k,v in best_habits.items() if v == highest_count]
+        final_worst_habits = [k for k,v in worst_habits.items() if v == lowest_count]
+
+    best_habit_str = "You've completed " + ', '.join(final_best_habits) + " the most in the past seven days! \n Completed: " + str(highest_count) + " days"   
+    worst_habit_str = "You've completed " + ', '.join(final_worst_habits)+ " the least in the past seven days. \n Completed:  " + str(lowest_count) + " days"   
+    return [best_habit_str, worst_habit_str] 
 
 
 def addTestHabit():

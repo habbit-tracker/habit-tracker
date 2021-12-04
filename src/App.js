@@ -2,15 +2,14 @@ import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal, ListGroup } from 'react-bootstrap';
+import { Button, Form, Modal, ListGroup, Row, Container, Col } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
-import { CardContainer } from './HabitInfoCard.js';
+import { HabitCardContainer } from './HabitCardContainer.js';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function ViewsMenuBar(props) {
-  //TODO: create enum rather than string for views
   return (<ListGroup horizontal>
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('this_week')}>This Week</ListGroup.Item>
     <ListGroup.Item action variant="info" onClick={() => props.onViewClick('past_seven_days')}>Past 7 Days</ListGroup.Item>
@@ -22,7 +21,7 @@ function ViewsMenuBar(props) {
 
 function AddHabit(props) {
   return (
-    <Button variant="outline-success" onClick={props.onClick}>Add Habit</Button>
+    <Button variant="outline-success" onClick={props.onClick}>+ Add Habit</Button>
   );
 }
 
@@ -95,13 +94,9 @@ function HabitForm(props) {
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
 
-  //TODO: implement current_views state to make client server interaction smoother
-  //Split up state
   const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers, args.messages])
-
   let habits = habitsAndHeaders[0];
   let headers = habitsAndHeaders[1];
-  //let messages = habitsAndHeaders.messages[2];
 
   let titleInput = useRef(null);
   let categoryInput = useRef(null);
@@ -142,6 +137,8 @@ function App() {
     }).then((response) => response.json())
       .then((data) => {
         setHH([data.habits, headers, data.messages]);
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
       });
 
     //Clears text fields and hides modal
@@ -167,8 +164,10 @@ function App() {
       }),
     }).then(response => response.json())
       .then((data) => {
+        console.log(data)
         setHH([data.habits, headers, data.messages]);
-        //messages = habitsAndHeaders[2];
+        habits = habitsAndHeaders[0];
+        headers = habitsAndHeaders[1];
 
 
       });
@@ -191,7 +190,6 @@ function App() {
         setHH([data.habits, data.day_headers, data.messages]);
         habits = habitsAndHeaders[0];
         headers = habitsAndHeaders[1];
-        //messages = habitsAndHeaders[2];
 
       });
   }
@@ -201,21 +199,27 @@ function App() {
       <Router>
         <Navbar />
       </Router>
+
       <FormModal show={modalShow} onClose={handleModalClose} onCreate={onCreateClick}
         titleInput={titleInput} categoryInput={categoryInput} checkBoxIds={checkBoxIds} />
       <ViewsMenuBar onViewClick={handleViewChange} />
       <br /><br />
 
-      <AddHabit onClick={handleModalShow} />
-<<<<<<< HEAD
-      <br /> <br /> <br />
-      <CardContainer messages={habitsAndHeaders[2]} />
-      <br /> <br /> <br />
-      <a href="/logout"><Button variant="outline-success" id="logout">Log Out!</Button></a>
+      <Container fluid >
+        <Row>
+          <Col lg="auto">
+            <AddHabit onClick={handleModalShow} />
+            <br /> <br />
+            <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
 
-=======
-      <HabitTable habits={habits} columnHeaders={headers} onSquareClick={handleSquareClick} />
->>>>>>> main
+          </Col >
+          <Col lg={{ offset: .25 }}>
+            <br /> <br />
+            <HabitCardContainer messages={habitsAndHeaders[2]} />
+          </Col >
+        </Row>
+      </Container>
+
     </>
   );
 
