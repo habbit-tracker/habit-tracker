@@ -1,4 +1,4 @@
-# Habbit Tracker
+# InHabit
 
 ## Heroku URL:
 
