@@ -16,7 +16,7 @@ Dhruv Parikh
 
 ## Notes
 
-While some information can be found on the log in page, there is a landing page within the webapp under the "About Us" page.
+While some information can be found on the log in page, there is more information  within the webapp under the "About" and "Contact Us" pages.
 
 ## Features and How to Use:
 
