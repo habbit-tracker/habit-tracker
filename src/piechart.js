@@ -28,9 +28,6 @@ var data = {
 
 var options = {
         rotation: -0.7 * Math.PI,
-        //responsive: false,
-        //radius: '200',
-        //maintainAspectRatio: false
 };
 
 
