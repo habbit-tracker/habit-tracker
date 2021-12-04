@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Profile Page</title>
+    <title>Edit Profile Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap 4 CDN link -->
     <link rel="stylesheet"
@@ -179,6 +179,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="myRightCtn">
+                        <div class="box">
+                            <header>Profile Page</header>
+                            <p class="toggle"><a class="toggle" href="{{ url_for('changepassword') }}">Change Password</a></p>
+                            <p class="toggle"><a class="toggle" href="{{ url_for('profileedit') }}">
+                                Edit Profile</a></p>
                 <div class="col-md-8">
                     <div class="card mb-3">
                         <div class="card-body">
