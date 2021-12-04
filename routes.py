@@ -1,6 +1,6 @@
 from app import app, bp, db
 from models import UserCredential, Habit
-from database import getCalendarWeekAndHabits, addUserHabit, addCompletionDate, removeCompletionDate, getPastWeekAndHabits, getPastMonthAndHabits, getPastNDayNumbers, getBWMonthHabits, getBWWeekHabits
+from database import *
 import os
 import json
 import requests
@@ -31,6 +31,7 @@ def index():
     DATA = {"habits": getCalendarWeekAndHabits(),
             "day_headers": ["M", "T", "W", "Th", "F", "S", "Su"],
             "messages": messages,
+            "pie_chart_data": getPieChartData(),
             }
     data = json.dumps(DATA)
     return flask.render_template(

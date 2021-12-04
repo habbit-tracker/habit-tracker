@@ -8,6 +8,9 @@ import { HabitTable } from './HabitTable.js';
 import { HabitCardContainer } from './HabitCardContainer.js';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import './piechart.js';
 
 function ViewsMenuBar(props) {
   return (<ListGroup horizontal>
@@ -93,6 +96,40 @@ function HabitForm(props) {
 
 function App() {
   const args = JSON.parse(document.getElementById("data").text);
+  let pieChartData = args.pie_chart_data;
+  var canvas = document.createElement('canvas');
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  var data = {
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    datasets: [{
+      label: "Habits Completed Each Day This Week",
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 2,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: pieChartData,
+    }]
+  };
+
+  var options = {
+    maintainAspectRatio: false,
+    radius: '200'
+  };
 
   const [habitsAndHeaders, setHH] = useState([args.habits, args.day_headers, args.messages])
   let habits = habitsAndHeaders[0];
@@ -194,6 +231,8 @@ function App() {
       });
   }
 
+
+
   return (
     <>
       <Router>
@@ -216,10 +255,18 @@ function App() {
           <Col lg={{ offset: .25 }}>
             <br /> <br />
             <HabitCardContainer messages={habitsAndHeaders[2]} />
+            <div style={{ width: 400, height: 400, }}>
+              <canvas id="habitPie" style={{ width: 400, height: 400, border: 'black solid 1px' }}></canvas>
+            </div>
           </Col >
         </Row>
       </Container>
 
+
+      {/* <br />
+      <div style={{width:400,height:400,}}>
+        <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
+      </div> */}
     </>
   );
 
