@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Modal, ListGroup, Row, Container, Col } from 'react-bootstrap';
+import { Button, Form, Modal, ListGroup, Row, Container, Col, Stack } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { HabitTable } from './HabitTable.js';
 import { HabitCardContainer } from './HabitCardContainer.js';
@@ -255,18 +255,17 @@ function App() {
           <Col lg={{ offset: .25 }}>
             <br /> <br />
             <HabitCardContainer messages={habitsAndHeaders[2]} />
-            <div style={{ width: 400, height: 400, }}>
-              <canvas id="habitPie" style={{ width: 400, height: 400, border: 'black solid 1px' }}></canvas>
-            </div>
+            <br /> <br />
+            <Stack gap={2} className="col-md-5 mx-auto">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><b>Habit count per day this week. Updates on refresh </b></div>
+              <div style={{ width: 400, height: 400, }}>
+                <canvas id="habitPie" style={{ width: 400, height: 400, border: 'black solid 1px' }}></canvas>
+              </div>
+            </Stack>
+
           </Col >
         </Row>
       </Container>
-
-
-      {/* <br />
-      <div style={{width:400,height:400,}}>
-        <canvas id="habitPie" style={{width:400,height:400,border:'black solid 1px'}}></canvas>
-      </div> */}
     </>
   );
 
